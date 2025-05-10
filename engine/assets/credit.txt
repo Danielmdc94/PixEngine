@@ -1,0 +1,2 @@
+Textures/Intro_bg.png | ramses2099 - https://opengameart.org/content/background-12
+Textures/Crosshair.png | https://kenney.nl/assets/crosshair-pack
