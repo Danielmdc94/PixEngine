@@ -22,7 +22,7 @@ void State_Intro::OnCreate()
 	fontManager->RequireResource("MainFont");
 
 	m_textTitle.setFont(*fontManager->GetResource("MainFont"));
-	m_textTitle.setString(sf::String("Sir Hives-a-lot"));
+	m_textTitle.setString(sf::String("PixEngine"));
 	m_textTitle.setCharacterSize(128);
 	m_textTitle.setStyle(sf::Text::Bold);
 	m_textTitle.setOutlineColor(sf::Color::Black);
@@ -52,10 +52,7 @@ void State_Intro::OnDestroy()
 void State_Intro::Activate()
 {
 	TextureManager* textureManager = m_stateManager->GetContext()->m_textureManager;
-	m_stateManager->GetContext()->m_entityManager->ResetSkeletonSpawner();
 	m_stateManager->GetContext()->m_entityManager->ClearEntities();
-	m_stateManager->Remove(StateType::Game);
-	m_stateManager->Remove(StateType::Store);
 	sf::Vector2f viewSize = m_view.getSize();
 	sf::Vector2u textureSize = textureManager->GetResource("IntroBackground")->getSize();
 	sf::Vector2f scaleFactors;

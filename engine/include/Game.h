@@ -8,7 +8,6 @@
 #include "Window.h"
 #include "SharedContext.h"
 #include "StateManager.h"
-#include "HUDManager.h"
 #include "ResourceManager.h"
 
 # define WIN_NAME   "Sir Hives-a-lot"
@@ -40,7 +39,6 @@ private:
 	AudioManager m_audioManager;
 	FontManager m_fontManager;
 	EntityManager m_entityManager;
-	HUDManager m_hudManager;
 
 	sf::Clock m_clock;
 	sf::Time m_elapsed;

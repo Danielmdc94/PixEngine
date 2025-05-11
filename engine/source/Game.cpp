@@ -1,7 +1,7 @@
 #include "../include/Game.h"
 #include <iostream>
 
-Game::Game() : m_window(WIN_NAME, sf::Vector2u(WIN_W, WIN_H)), m_stateManager(&m_context), m_eventManager(&m_context), m_entityManager(&m_context), m_hudManager(&m_context)
+Game::Game() : m_window(WIN_NAME, sf::Vector2u(WIN_W, WIN_H)), m_stateManager(&m_context), m_eventManager(&m_context), m_entityManager(&m_context)
 {
 	m_clock.restart();
 	srand(time(nullptr));
@@ -13,7 +13,6 @@ Game::Game() : m_window(WIN_NAME, sf::Vector2u(WIN_W, WIN_H)), m_stateManager(&m
 	m_context.m_fontManager = &m_fontManager;
 	m_context.m_entityManager = &m_entityManager;
 	m_context.m_stateManager = &m_stateManager;
-	m_context.m_hudManager = &m_hudManager;
 	m_stateManager.SwitchTo(StateType::Intro);
 }
 

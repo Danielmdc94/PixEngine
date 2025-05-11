@@ -2,9 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Rectangle.h"
-
-enum class EntityType { Base, Player, Arrow, Skeleton};
+enum class EntityType { Base };
 
 enum class EntityState { Idle, Moving };
 
@@ -30,7 +28,6 @@ public:
 	EntityState GetState() { return m_state; };
 	sf::Vector2f GetPosition() { return m_position; };
 	sf::Vector2f GetSize() { return m_size; };
-	Rectangle GetBoxCollider() { return m_boxCollider; };
 
 	bool IsMarkedForDeletion() const { return m_isMarkedForDeletion; }
 	void MarkForDeletion() { m_isMarkedForDeletion = true; }
@@ -59,7 +56,6 @@ protected:
 	sf::Vector2f m_acceleration;
 	sf::Vector2f m_friction;
 	sf::Vector2f m_size;
-	Rectangle m_boxCollider;
 
 	EntityState m_state;
 	

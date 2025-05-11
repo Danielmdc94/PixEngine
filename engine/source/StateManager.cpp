@@ -92,14 +92,6 @@ void StateManager::CreateState(const StateType& l_type)
 	std::unique_ptr<State> newState = nullptr;
 	if (l_type == StateType::Intro)
 		newState = std::make_unique<State_Intro>(this);
-	else if (l_type == StateType::Game)
-		newState = std::make_unique<State_Game>(this);
-	else if (l_type == StateType::Paused)
-		newState = std::make_unique<State_Paused>(this);
-	else if (l_type == StateType::Store)
-		newState = std::make_unique<State_Store>(this);
-	else if (l_type == StateType::GameOver)
-		newState = std::make_unique<State_GameOver>(this);
 	else
 		return;
 	

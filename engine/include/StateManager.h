@@ -3,11 +3,7 @@
 #include <memory>
 
 #include "State.h"
-#include "State_Game.h"
 #include "State_Intro.h"
-#include "State_Paused.h"
-#include "State_Store.h"
-#include "State_GameOver.h"
 #include "SharedContext.h"
 
 enum class StateType

@@ -9,8 +9,7 @@ Entity::Entity(EntityManager* l_entityMgr) :
 	m_type(EntityType::Base),
 	m_state(EntityState::Idle),
 	m_id(0),
-	m_isMarkedForDeletion(false),
-	m_boxCollider(GetSize(), GetPosition())
+	m_isMarkedForDeletion(false)
 {
 
 }

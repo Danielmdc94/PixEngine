@@ -6,13 +6,12 @@
 #include "AudioManager.h"
 #include "FontManager.h"
 #include "EntityManager.h"
-#include "HUDManager.h"
 
 class StateManager;
 
 struct SharedContext
 {
-	SharedContext() : m_window(nullptr), m_eventManager(nullptr), m_textureManager(nullptr), m_audioManager(nullptr), m_fontManager(nullptr), m_entityManager(nullptr), m_stateManager(nullptr), m_hudManager(nullptr) {}
+	SharedContext() : m_window(nullptr), m_eventManager(nullptr), m_textureManager(nullptr), m_audioManager(nullptr), m_fontManager(nullptr), m_entityManager(nullptr), m_stateManager(nullptr) {}
 
 	Window* m_window;
 	EventManager* m_eventManager;
@@ -21,5 +20,4 @@ struct SharedContext
 	FontManager* m_fontManager;
 	EntityManager* m_entityManager;
 	StateManager* m_stateManager;
-	HUDManager* m_hudManager;
 };
