@@ -19,9 +19,9 @@ void State_Intro::OnCreate()
 	m_spriteBackground.setOrigin(textureManager->GetResource("IntroBackground")->getSize().x / 2.0f, textureManager->GetResource("IntroBackground")->getSize().y / 2.0f);
 	m_spriteBackground.setPosition(windowSize.x / 2.0f, windowSize.y / 2.0f);
 
-	fontManager->RequireResource("MainFont");
+	fontManager->RequireResource("EngineFont");
 
-	m_textTitle.setFont(*fontManager->GetResource("MainFont"));
+	m_textTitle.setFont(*fontManager->GetResource("EngineFont"));
 	m_textTitle.setString(sf::String("PixEngine"));
 	m_textTitle.setCharacterSize(128);
 	m_textTitle.setStyle(sf::Text::Bold);
@@ -32,7 +32,7 @@ void State_Intro::OnCreate()
 	m_textTitle.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
 	m_textTitle.setPosition(windowSize.x / 2.0f, windowSize.y / 4.0f);
 
-	m_textContinue.setFont(*fontManager->GetResource("MainFont"));
+	m_textContinue.setFont(*fontManager->GetResource("EngineFont"));
 	m_textContinue.setString(sf::String("Press any key to continue"));
 	m_textContinue.setCharacterSize(32);
 	m_textContinue.setOutlineColor(sf::Color::Black);
