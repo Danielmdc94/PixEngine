@@ -14,11 +14,11 @@
 # define WIN_W 		1920
 # define WIN_H 		1080
 
-class Game
+class Engine
 {
 public:
-	Game();
-	~Game();
+	Engine();
+	~Engine();
 
 	void Update();
 	void Render();

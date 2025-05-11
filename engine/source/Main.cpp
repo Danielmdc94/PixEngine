@@ -1,15 +1,13 @@
-#include "../include/game.h"
+#include "../include/Engine.h"
 
 int main(int argc, char* argv[])
 {
-	//ResourceManager::init(argv[0]);
-
-	Game game;
-	while (!game.GetWindow()->IsDone())
+	Engine engine;
+	while (!engine.GetWindow()->IsDone())
 	{
-		game.Update();
-		game.Render();
-		game.LateUpdate();
+		engine.Update();
+		engine.Render();
+		engine.LateUpdate();
 	}
 	return(0);
 }

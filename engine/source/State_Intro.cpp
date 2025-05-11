@@ -98,5 +98,5 @@ void State_Intro::Draw()
 
 void State_Intro::Continue()
 {
-	m_stateManager->SwitchTo(StateType::Game);
+	m_stateManager->SwitchTo(StateType::Menu);
 }

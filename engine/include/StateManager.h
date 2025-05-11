@@ -8,7 +8,7 @@
 
 enum class StateType
 {
-	Intro = 1, Game, Paused, Store, GameOver
+	Intro = 1, Menu, Editor
 };
 
 class StateManager

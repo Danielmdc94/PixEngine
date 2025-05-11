@@ -1,7 +1,7 @@
-#include "../include/Game.h"
+#include "../include/Engine.h"
 #include <iostream>
 
-Game::Game() : m_window(WIN_NAME, sf::Vector2u(WIN_W, WIN_H)), m_stateManager(&m_context), m_eventManager(&m_context), m_entityManager(&m_context)
+Engine::Engine() : m_window(WIN_NAME, sf::Vector2u(WIN_W, WIN_H)), m_stateManager(&m_context), m_eventManager(&m_context), m_entityManager(&m_context)
 {
 	m_clock.restart();
 	srand(time(nullptr));
@@ -16,26 +16,26 @@ Game::Game() : m_window(WIN_NAME, sf::Vector2u(WIN_W, WIN_H)), m_stateManager(&m
 	m_stateManager.SwitchTo(StateType::Intro);
 }
 
-Game::~Game()
+Engine::~Engine()
 {
 
 }
 
-void Game::Update()
+void Engine::Update()
 {
 	m_window.Update();
 	m_eventManager.Update();
 	m_stateManager.Update(m_elapsed);
 }
 
-void Game::Render()
+void Engine::Render()
 {
 	m_window.BeginDraw();
 	m_stateManager.Draw();
 	m_window.EndDraw();
 }
 
-void Game::LateUpdate()
+void Engine::LateUpdate()
 {
 	RestartClock();
 }
