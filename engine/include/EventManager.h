@@ -18,10 +18,6 @@ public:
 private:
 	void HandleGeneralEvents(sf::Event l_event);
 	void HandleIntroEvents(sf::Event l_event);
-	void HandleStoreEvents(sf::Event l_event);
-	void HandleGameEvents(sf::Event l_event);
-	void HandlePausedEvents(sf::Event l_event);
-	void HandleGameOverEvents(sf::Event l_event);
 
 	SharedContext* m_context;
 	StateType m_currentState;

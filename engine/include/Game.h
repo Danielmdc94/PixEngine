@@ -10,7 +10,7 @@
 #include "StateManager.h"
 #include "ResourceManager.h"
 
-# define WIN_NAME   "Sir Hives-a-lot"
+# define WIN_NAME   "PixEngine"
 # define WIN_W 		1920
 # define WIN_H 		1080
 

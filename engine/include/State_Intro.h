@@ -2,6 +2,8 @@
 
 #include "State.h"
 #include "StateManager.h"
+#include <SFML/Audio/Music.hpp>
+
 
 class State_Intro : public State
 {
@@ -18,10 +20,15 @@ public:
 	void Continue();
 
 private:
-	sf::Sprite m_spriteBackground;
-	sf::Text m_textTitle;
-	sf::Text m_textContinue;
 	sf::Font m_font;
+	sf::Sprite m_spriteLogo;
+	sf::Text m_textLogo;
+	sf::Text m_textContinue;
+	sf::Music* m_sfxLogo;
 
-	float m_textTimer;
+	float m_timerTextContinue;
+	float m_timerTextLogo;
+	float m_timerSpriteLogo;
+
+	bool m_musicPlayed;
 };
