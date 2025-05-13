@@ -45,4 +45,9 @@ namespace Utils
 		return GetWorkingDirectory() + std::string("engine/assets/");
 	}
 
+	inline std::string GetEngineConfigDirectory()
+	{
+		return GetWorkingDirectory() + std::string("engine/config/");
+	}
+
 }
