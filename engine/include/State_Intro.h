@@ -1,14 +1,14 @@
 #pragma once
 
-#include "State.h"
+#include "BaseState.h"
 #include "StateManager.h"
 #include <SFML/Audio/Music.hpp>
 
 
-class State_Intro : public State
+class State_Intro : public BaseState
 {
 public:
-	State_Intro(StateManager* l_stateManager) : State(l_stateManager) {}
+	State_Intro(StateManager* l_stateManager) : BaseState(l_stateManager) {}
 
 	void OnCreate() override;
 	void OnDestroy();
@@ -26,9 +26,10 @@ private:
 	sf::Text m_textContinue;
 	sf::Music* m_sfxLogo;
 
-	float m_timerTextContinue;
-	float m_timerTextLogo;
-	float m_timerSpriteLogo;
+	float m_timePassed = 0.f;
+	float m_timerTextContinue = 0.f;
+	float m_timerTextLogo = 0.f;
+	float m_timerSpriteLogo = 0.f;
 
 	bool m_musicPlayed;
 };

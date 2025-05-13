@@ -2,7 +2,6 @@
 
 void State_Intro::OnCreate()
 {
-	m_type = StateType::Intro;
 	sf::Vector2u windowSize = m_stateManager->GetContext()->m_window->GetRenderWindow()->getSize();
 	TextureManager* textureManager = m_stateManager->GetContext()->m_textureManager;
 	AudioManager* audioManager = m_stateManager->GetContext()->m_audioManager;
@@ -41,16 +40,14 @@ void State_Intro::OnCreate()
 	textRect = m_textContinue.getLocalBounds();
 	m_textContinue.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
 	m_textContinue.setPosition(windowSize.x / 2.0f, windowSize.y / 1.2f);
-
-	m_timerSpriteLogo = 0.f;
-	m_timerTextLogo = 0.f;
-	m_timerTextContinue = 0.f;
+	
 	m_musicPlayed = false;
 }
 
 void State_Intro::OnDestroy()
 {
-
+	//EventManager* eventManager = m_stateManager->GetContext()->m_eventManager;
+	//eventManager->RemoveCallback(StateType::Intro, "Intro_Continue");
 }
 
 void State_Intro::Activate()
@@ -65,6 +62,7 @@ void State_Intro::Deactivate()
 
 void State_Intro::Update(const sf::Time& l_deltaTime)
 {
+	m_timePassed += l_deltaTime.asSeconds();
 	m_timerSpriteLogo += l_deltaTime.asSeconds();
 	m_timerTextContinue += l_deltaTime.asSeconds();
 	m_timerTextLogo += l_deltaTime.asSeconds();
@@ -98,5 +96,9 @@ void State_Intro::Draw()
 
 void State_Intro::Continue()
 {
-	m_stateManager->SwitchTo(StateType::Menu);
+	if (m_timePassed >= 5.0f)
+	{
+		m_stateManager->SwitchTo(StateType::Menu);
+		m_stateManager->Remove(StateType::Intro);
+	}
 }

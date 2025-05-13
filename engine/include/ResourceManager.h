@@ -91,7 +91,8 @@ private:
 	void LoadPaths(const std::string& l_pathFile)
 	{
 		std::ifstream paths;
-		paths.open(Utils::GetEngineResourceDirectory() + l_pathFile);
+		paths.open(Utils::GetEngineConfigDirectory() + l_pathFile);
+		std::cerr << Utils::GetEngineConfigDirectory() << l_pathFile << std::endl;
 		if (paths.is_open())
 		{
 			std::string line;
