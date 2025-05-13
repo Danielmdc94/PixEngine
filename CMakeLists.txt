@@ -36,7 +36,11 @@ source_group("source" FILES ${SOURCES})
 source_group("include" FILES ${HEADERS})
 source_group("assets" FILES ${ASSETS})
 
-add_executable(${TARGET_NAME} MACOSX_BUNDLE ${SOURCES} ${HEADERS})
+if(WIN32)
+    set(WINDOWS_ICON ${CMAKE_CURRENT_SOURCE_DIR}/engine/resources/App.rc)
+endif()
+
+add_executable(${TARGET_NAME} MACOSX_BUNDLE ${SOURCES} ${HEADERS} ${WINDOWS_ICON})
 target_include_directories(${TARGET_NAME} PRIVATE include engine/include)
 target_link_libraries(${TARGET_NAME} PRIVATE sfml-audio sfml-graphics sfml-window sfml-system Shlwapi)
 
@@ -66,6 +70,7 @@ else()
         COMMENT "Copy OpenAL DLL"
         PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SFML_SOURCE_DIR}/extlibs/bin/$<IF:$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>,x64,x86>/openal32.dll $<TARGET_FILE_DIR:PixEngine>
         VERBATIM)
+        
     # Copy root-level assets
     add_custom_command(
         TARGET ${TARGET_NAME}
@@ -87,4 +92,26 @@ else()
         COMMENT "Copy engine assets directory"
         VERBATIM
     )
+    
+    # Copy engine-level config
+    add_custom_command(
+        TARGET ${TARGET_NAME}
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/engine/config
+        $<TARGET_FILE_DIR:${TARGET_NAME}>/engine/config
+        COMMENT "Copy engine config directory"
+        VERBATIM
+    )
+    # Copy engine-level resources
+    add_custom_command(
+        TARGET ${TARGET_NAME}
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/engine/resources
+        $<TARGET_FILE_DIR:${TARGET_NAME}>/engine/resources
+        COMMENT "Copy engine resources directory"
+        VERBATIM
+    )
+
 endif()
