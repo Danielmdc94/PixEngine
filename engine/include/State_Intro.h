@@ -2,6 +2,7 @@
 
 #include "BaseState.h"
 #include "StateManager.h"
+#include "EventManager.h"
 #include <SFML/Audio/Music.hpp>
 
 
@@ -17,7 +18,7 @@ public:
 	void Update(const sf::Time& l_deltaTime) override;
 	void Draw() override;
 
-	void Continue();
+	void Continue(EventDetails* l_details);
 
 private:
 	sf::Font m_font;

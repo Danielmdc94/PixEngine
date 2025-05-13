@@ -32,7 +32,7 @@ void State_Intro::OnCreate()
 	m_textLogo.setPosition(windowSize.x / 2.0f, windowSize.y / 2.0f);
 
 	m_textContinue.setFont(*fontManager->GetResource("EngineFont"));
-	m_textContinue.setString(sf::String("Press any key to continue"));
+	m_textContinue.setString(sf::String("Press SPACE to continue"));
 	m_textContinue.setCharacterSize(32);
 	m_textContinue.setOutlineColor(sf::Color::Black);
 	m_textContinue.setOutlineThickness(1.f);
@@ -42,12 +42,15 @@ void State_Intro::OnCreate()
 	m_textContinue.setPosition(windowSize.x / 2.0f, windowSize.y / 1.2f);
 	
 	m_musicPlayed = false;
+
+	EventManager* eventManager = m_stateManager->GetContext()->m_eventManager;
+	eventManager->AddCallback(StateType::Intro, "Intro_Continue", &State_Intro::Continue, this);
 }
 
 void State_Intro::OnDestroy()
 {
-	//EventManager* eventManager = m_stateManager->GetContext()->m_eventManager;
-	//eventManager->RemoveCallback(StateType::Intro, "Intro_Continue");
+	EventManager* eventManager = m_stateManager->GetContext()->m_eventManager;
+	eventManager->RemoveCallback(StateType::Intro, "Intro_Continue");
 }
 
 void State_Intro::Activate()
@@ -94,9 +97,9 @@ void State_Intro::Draw()
 	}
 }
 
-void State_Intro::Continue()
+void State_Intro::Continue(EventDetails* l_details)
 {
-	if (m_timePassed >= 5.0f)
+	if (m_timePassed >= 2.5f)
 	{
 		m_stateManager->SwitchTo(StateType::Menu);
 		m_stateManager->Remove(StateType::Intro);

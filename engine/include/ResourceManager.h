@@ -92,7 +92,6 @@ private:
 	{
 		std::ifstream paths;
 		paths.open(Utils::GetEngineConfigDirectory() + l_pathFile);
-		std::cerr << Utils::GetEngineConfigDirectory() << l_pathFile << std::endl;
 		if (paths.is_open())
 		{
 			std::string line;
