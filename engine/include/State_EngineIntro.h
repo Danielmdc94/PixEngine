@@ -6,10 +6,10 @@
 #include <SFML/Audio/Music.hpp>
 
 
-class State_Intro : public BaseState
+class State_EngineIntro : public BaseState
 {
 public:
-	State_Intro(StateManager* l_stateManager) : BaseState(l_stateManager) {}
+	State_EngineIntro(StateManager* l_stateManager) : BaseState(l_stateManager) {}
 
 	void OnCreate() override;
 	void OnDestroy();

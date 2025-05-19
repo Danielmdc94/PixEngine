@@ -96,7 +96,7 @@ public:
 	void HandleEvent(sf::Event& l_event);
 	sf::Vector2i GetMousePosition(sf::RenderWindow* l_wind = nullptr);
 
-	template<class T>
+	template<typename T>
 	bool AddCallback(StateType l_state, const std::string& l_name, void(T::* l_func)(EventDetails*), T* l_instance)
 	{
 		auto itr = m_callbacks.emplace(l_state, CallbackContainer()).first;

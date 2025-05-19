@@ -1,10 +1,8 @@
 #include "../include/StateManager.h"
-#include "../include/SharedContext.h"
-#include <iostream>
 
 StateManager::StateManager(SharedContext* l_context) : m_context(l_context)
 {
-	RegisterState<State_Intro>(StateType::Intro);
+	RegisterState<State_EngineIntro>(StateType::EngineIntro);
 }
 
 StateManager::~StateManager()

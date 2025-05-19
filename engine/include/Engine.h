@@ -34,6 +34,7 @@ private:
 	SharedContext m_context;
 	Window m_window;
 	StateManager m_stateManager;
+	UIManager m_uiManager;
 	EventManager m_eventManager;
 	TextureManager m_textureManager;
 	AudioManager m_audioManager;

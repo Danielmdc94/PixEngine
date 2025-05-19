@@ -1,6 +1,6 @@
-#include "../include/State_Intro.h"
+#include "State_EngineIntro.h"
 
-void State_Intro::OnCreate()
+void State_EngineIntro::OnCreate()
 {
 	sf::Vector2u windowSize = m_stateManager->GetContext()->m_window->GetRenderWindow()->getSize();
 	TextureManager* textureManager = m_stateManager->GetContext()->m_textureManager;
@@ -44,26 +44,26 @@ void State_Intro::OnCreate()
 	m_musicPlayed = false;
 
 	EventManager* eventManager = m_stateManager->GetContext()->m_eventManager;
-	eventManager->AddCallback(StateType::Intro, "Intro_Continue", &State_Intro::Continue, this);
+	eventManager->AddCallback(StateType::EngineIntro, "EngineIntro_Continue", &State_EngineIntro::Continue, this);
 }
 
-void State_Intro::OnDestroy()
+void State_EngineIntro::OnDestroy()
 {
 	EventManager* eventManager = m_stateManager->GetContext()->m_eventManager;
-	eventManager->RemoveCallback(StateType::Intro, "Intro_Continue");
+	eventManager->RemoveCallback(StateType::EngineIntro, "EngineIntro_Continue");
 }
 
-void State_Intro::Activate()
+void State_EngineIntro::Activate()
 {
 
 }
 
-void State_Intro::Deactivate()
+void State_EngineIntro::Deactivate()
 {
 
 }
 
-void State_Intro::Update(const sf::Time& l_deltaTime)
+void State_EngineIntro::Update(const sf::Time& l_deltaTime)
 {
 	m_timePassed += l_deltaTime.asSeconds();
 	m_timerSpriteLogo += l_deltaTime.asSeconds();
@@ -78,7 +78,7 @@ void State_Intro::Update(const sf::Time& l_deltaTime)
 	
 }
 
-void State_Intro::Draw()
+void State_EngineIntro::Draw()
 {
 	sf::RenderWindow* window = m_stateManager->GetContext()->m_window->GetRenderWindow();
 
@@ -97,11 +97,11 @@ void State_Intro::Draw()
 	}
 }
 
-void State_Intro::Continue(EventDetails* l_details)
+void State_EngineIntro::Continue(EventDetails* l_details)
 {
 	if (m_timePassed >= 2.5f)
 	{
 		m_stateManager->SwitchTo(StateType::Menu);
-		m_stateManager->Remove(StateType::Intro);
+		m_stateManager->Remove(StateType::EngineIntro);
 	}
 }

@@ -4,14 +4,13 @@
 #include <unordered_map>
 #include <functional>
 
-#include "../include/BaseState.h"
-#include "BaseState.h"
-#include "State_Intro.h"
 #include "SharedContext.h"
+#include "BaseState.h"
+#include "State_EngineIntro.h"
 
 enum class StateType
 {
-	Intro = 1, Menu, Editor
+	EngineIntro = 1, Menu, Editor
 };
 
 using StateContainer = std::vector<std::pair<StateType, BaseState*>>;
@@ -43,7 +42,7 @@ private:
 	void CreateState(const StateType& l_type);
 	void RemoveState(const StateType& l_type);
 
-	template<class T>
+	template<typename T>
 	void RegisterState(const StateType& l_type)
 	{
 		m_stateFactory[l_type] = [this]() -> BaseState* { return new T(this); };

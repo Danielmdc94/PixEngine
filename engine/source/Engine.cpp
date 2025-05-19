@@ -1,7 +1,7 @@
 #include "../include/Engine.h"
 #include <iostream>
 
-Engine::Engine() : m_window(WIN_NAME, sf::Vector2u(WIN_W, WIN_H)), m_stateManager(&m_context), m_entityManager(&m_context)
+Engine::Engine() : m_window(WIN_NAME, sf::Vector2u(WIN_W, WIN_H)), m_stateManager(&m_context), m_uiManager(&m_context), m_entityManager(&m_context)
 {
 	m_clock.restart();
 	srand(time(nullptr));
@@ -11,9 +11,10 @@ Engine::Engine() : m_window(WIN_NAME, sf::Vector2u(WIN_W, WIN_H)), m_stateManage
 	m_context.m_textureManager = &m_textureManager;
 	m_context.m_audioManager = &m_audioManager;
 	m_context.m_fontManager = &m_fontManager;
+	m_context.m_uiManager = &m_uiManager;
 	m_context.m_entityManager = &m_entityManager;
 	m_context.m_stateManager = &m_stateManager;
-	m_stateManager.SwitchTo(StateType::Intro);
+	m_stateManager.SwitchTo(StateType::EngineIntro);
 }
 
 Engine::~Engine()
