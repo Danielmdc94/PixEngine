@@ -19,7 +19,6 @@ void State_EngineIntro::OnCreate()
 	m_spriteLogo.setColor(sf::Color(255, 255, 255, 0));
 
 	fontManager->RequireResource("EngineFont");
-
 	m_textLogo.setFont(*fontManager->GetResource("EngineFont"));
 	m_textLogo.setString(sf::String("PixEngine"));
 	m_textLogo.setCharacterSize(64);
@@ -44,13 +43,13 @@ void State_EngineIntro::OnCreate()
 	m_musicPlayed = false;
 
 	EventManager* eventManager = m_stateManager->GetContext()->m_eventManager;
-	eventManager->AddCallback(StateType::EngineIntro, "EngineIntro_Continue", &State_EngineIntro::Continue, this);
+	eventManager->AddCallback(StateType::EngineIntro, "Key_Space", &State_EngineIntro::Continue, this);
 }
 
 void State_EngineIntro::OnDestroy()
 {
 	EventManager* eventManager = m_stateManager->GetContext()->m_eventManager;
-	eventManager->RemoveCallback(StateType::EngineIntro, "EngineIntro_Continue");
+	eventManager->RemoveCallback(StateType::EngineIntro, "Key_Space");
 }
 
 void State_EngineIntro::Activate()
@@ -101,7 +100,7 @@ void State_EngineIntro::Continue(EventDetails* l_details)
 {
 	if (m_timePassed >= 2.5f)
 	{
-		m_stateManager->SwitchTo(StateType::Menu);
+		m_stateManager->SwitchTo(StateType::EngineMenu);
 		m_stateManager->Remove(StateType::EngineIntro);
 	}
 }

@@ -37,6 +37,11 @@ SharedContext* UIManager::GetContext()
 	return m_context;
 }
 
+std::vector<UIElement*>* UIManager::GetElements()
+{
+	return &m_elementOrder;
+}
+
 UIElement* UIManager::GetElement(const std::string& l_id)
 {
 	auto it = m_elements.find(l_id);

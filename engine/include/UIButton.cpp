@@ -39,15 +39,20 @@ void UIButton::SetText(const std::string& l_text, const sf::Font& l_font, unsign
 	m_text.setFillColor(sf::Color::White);
 }
 
-void UIButton::SetCallback(const std::function<void()>& l_callback)
+void UIButton::SetCallback(std::function<void()> l_callback)
 {
 	m_callback = l_callback;
 }
 
-void UIButton::HandleClick(const sf::Vector2f& l_mousePos)
+void UIButton::OnClick()
 {
-	if (m_shape.getGlobalBounds().contains(l_mousePos) && m_callback)
+	if (m_callback)
 	{
 		m_callback();
 	}
+}
+
+bool UIButton::IsHovered(const sf::Vector2f& mousePos) const
+{
+	return m_shape.getGlobalBounds().contains(mousePos);
 }

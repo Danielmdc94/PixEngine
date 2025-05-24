@@ -27,12 +27,14 @@ void Engine::Update()
 	m_window.Update();
 	m_eventManager.Update();
 	m_stateManager.Update(m_elapsed);
+	m_uiManager.Update(m_elapsed);
 }
 
 void Engine::Render()
 {
 	m_window.BeginDraw();
 	m_stateManager.Draw();
+	m_uiManager.Draw();
 	m_window.EndDraw();
 }
 

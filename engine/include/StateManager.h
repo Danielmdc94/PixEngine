@@ -7,10 +7,11 @@
 #include "SharedContext.h"
 #include "BaseState.h"
 #include "State_EngineIntro.h"
+#include "State_EngineMenu.h"
 
 enum class StateType
 {
-	EngineIntro = 1, Menu, Editor
+	EngineIntro = 1, EngineMenu, Editor
 };
 
 using StateContainer = std::vector<std::pair<StateType, BaseState*>>;

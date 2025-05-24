@@ -30,7 +30,7 @@ T* CreateElement(const std::string& l_id, int renderOrder = -1)
         if (HasElement(l_id)) {
             return nullptr;
         }
-        auto element = std::make_unique<T>(m_context);
+        auto element = std::make_unique<T>(this);
         T* elementPtr = element.get();
         m_elements[l_id] = std::move(element);
         if (renderOrder < 0)
@@ -45,6 +45,8 @@ T* CreateElement(const std::string& l_id, int renderOrder = -1)
         elementPtr->OnCreate();
         return elementPtr;
     }
+
+    std::vector<UIElement*>* GetElements();
 
     UIElement* GetElement(const std::string& l_id);
     bool HasElement(const std::string& l_id) const;

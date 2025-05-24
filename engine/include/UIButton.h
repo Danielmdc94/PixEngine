@@ -19,12 +19,14 @@ public:
 
 	void SetSize(const sf::Vector2f& l_size);
 	void SetText(const std::string& l_text, const sf::Font& l_font, unsigned int l_charSize = 20);
-	void SetCallback(const std::function<void()>& l_callback);
-	void HandleClick(const sf::Vector2f& l_mousePos);
+	void SetCallback(std::function<void()> l_callback); 
 
-private:
+	void OnClick();
+	bool IsHovered(const sf::Vector2f& mousePos) const;
+
+protected:
 	sf::RectangleShape m_shape;
 	sf::Text m_text;
-	std::function<void()> m_callback;
 	
+	std::function<void()> m_callback;
 };
