@@ -13,13 +13,13 @@ public:
 	State_EngineMenu(StateManager* l_stateManager) : BaseState(l_stateManager) {}
 
 	void OnCreate() override;
-	void OnDestroy();
+	void OnDestroy() override;
 	void Activate() override;
 	void Deactivate() override;
 	void Update(const sf::Time& l_deltaTime) override;
 	void Draw() override;
-	
-	void HandleMouseClick(EventDetails* details);
+	void HandleMouseMove(const sf::Vector2f& mousePos);
+	void HandleClick(EventDetails* details);
 
 private:
 	sf::Font m_font;

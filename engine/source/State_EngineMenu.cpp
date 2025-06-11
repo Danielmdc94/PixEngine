@@ -2,20 +2,15 @@
 
 void State_EngineMenu::OnCreate()
 {
-	FontManager* fontManager = m_stateManager->GetContext()->m_fontManager;
+	UIButton* playButton = m_uiLayer.CreateElement<UIButton>();
+	playButton->SetPosition({100, 100});
+	playButton->SetSize({200, 50});
+	playButton->SetText("Play", *m_stateManager->GetContext()->m_fontManager->GetResource("EngineFont"));
+	playButton->SetCallback([]() { std::cout << "Play button clicked!\n"; });
 
-	UIManager* uiManager = m_stateManager->GetContext()->m_uiManager;
-
-	UIButton* backButton = uiManager->CreateElement<UIButton>("BackButton");
-	backButton->SetPosition({100, 100});
-	backButton->SetSize({200, 50});
-	backButton->SetText("Play", *fontManager->GetResource("EngineFont"));
-	backButton->SetCallback([]() {
-		std::cout << "Back button clicked!\n";
-	});
 
 	EventManager* eventManager = m_stateManager->GetContext()->m_eventManager;
-	eventManager->AddCallback(StateType::EngineMenu, "Mouse_Left", &State_EngineMenu::HandleMouseClick, this);
+	eventManager->AddCallback(StateType::EngineMenu, "Mouse_Left", &State_EngineMenu::HandleClick, this);
 }
 
 void State_EngineMenu::OnDestroy()
@@ -36,29 +31,24 @@ void State_EngineMenu::Deactivate()
 
 void State_EngineMenu::Update(const sf::Time& l_deltaTime)
 {
+	m_uiLayer.Update(l_deltaTime);
 
 }
 
 void State_EngineMenu::Draw()
 {
 	sf::RenderWindow* window = m_stateManager->GetContext()->m_window->GetRenderWindow();
+	m_uiLayer.Draw(*window);
 }
 
-void State_EngineMenu::HandleMouseClick(EventDetails* details)
+void State_EngineMenu::HandleMouseMove(const sf::Vector2f& mousePos)
 {
-	sf::Vector2f mousePos(static_cast<float>(details->m_mouse.x), static_cast<float>(details->m_mouse.y));
-
-	const auto* elements = m_stateManager->GetContext()->m_uiManager->GetElements();
-	if (!elements) return;
-	for (UIElement* element : *elements)
-	{
-		if (UIButton* button = dynamic_cast<UIButton*>(element))
-		{
-			if (button->IsVisible() && button->IsHovered(mousePos))
-			{
-				button->OnClick();
-				break;
-			}
-		}
-	}
+	m_uiLayer.HandleMouseMove(mousePos);
 }
+
+void State_EngineMenu::HandleClick(EventDetails* details)
+{
+	sf::Vector2f mousePos = details->m_mouse;
+	m_uiLayer.HandleClick(mousePos);
+}
+

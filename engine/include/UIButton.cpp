@@ -1,58 +1,75 @@
 #include "UIButton.h"
 
-void UIButton::OnCreate()
+UIButton::UIButton() : m_isHovered(false)
 {
-	m_shape.setSize({100.f, 40.f});
-	m_shape.setFillColor(sf::Color::Blue);
+	m_shape.setFillColor(sf::Color::White);
+	m_text.setFillColor(sf::Color::Black);
+}
+
+void UIButton::SetSize(const sf::Vector2f& size)
+{
+	m_shape.setSize(size);
+}
+
+void UIButton::SetText(const std::string& text, const sf::Font& font)
+{
+	m_text.setFont(font);
+	m_text.setString(text);
+	CenterText();
+}
+
+void UIButton::SetCallback(Callback callback)
+{
+	m_callback = callback;
+}
+
+void UIButton::Update(const sf::Time& deltaTime)
+{
+	if (!m_isActive)
+	{
+		return;
+	}
+
+	m_shape.setFillColor(m_isHovered ? sf::Color(200, 200, 200) : sf::Color::White);
+}
+
+void UIButton::Draw(sf::RenderTarget& target)
+{
+	if (!m_isVisible)
+	{
+		return;
+	}
+
 	m_shape.setPosition(m_position);
-	m_text.setFillColor(sf::Color::White);
+	target.draw(m_shape);
+	target.draw(m_text);
 }
 
-void UIButton::OnDestroy()
+bool UIButton::Contains(const sf::Vector2f& point) const
 {
-	
+	return m_shape.getGlobalBounds().contains(point);
 }
 
-void UIButton::Update(const sf::Time& l_deltaTime)
+void UIButton::OnHover(bool isHovered)
 {
-	m_shape.setPosition(m_position);
-	m_text.setPosition(m_position + sf::Vector2f(10.f, 5.f));
-}
-
-void UIButton::Draw()
-{
-	sf::RenderWindow* window = m_uiManager->GetContext()->m_window->GetRenderWindow();
-	window->draw(m_shape);
-	window->draw(m_text);
-}
-
-void UIButton::SetSize(const sf::Vector2f& l_size)
-{
-	m_shape.setSize(l_size);
-}
-
-void UIButton::SetText(const std::string& l_text, const sf::Font& l_font, unsigned int l_charSize)
-{
-	m_text.setFont(l_font);
-	m_text.setString(l_text);
-	m_text.setCharacterSize(l_charSize);
-	m_text.setFillColor(sf::Color::White);
-}
-
-void UIButton::SetCallback(std::function<void()> l_callback)
-{
-	m_callback = l_callback;
+	m_isHovered = isHovered;
 }
 
 void UIButton::OnClick()
 {
-	if (m_callback)
+	if (m_callback && m_isActive && m_isVisible)
 	{
 		m_callback();
 	}
 }
 
-bool UIButton::IsHovered(const sf::Vector2f& mousePos) const
+void UIButton::CenterText()
 {
-	return m_shape.getGlobalBounds().contains(mousePos);
+	sf::FloatRect textBounds = m_text.getLocalBounds();
+	sf::FloatRect shapeBounds = m_shape.getLocalBounds();
+
+	m_text.setPosition(
+		m_position.x + (shapeBounds.width - textBounds.width) / 2.f,
+		m_position.y + (shapeBounds.height - textBounds.height) / 2.f
+	);
 }

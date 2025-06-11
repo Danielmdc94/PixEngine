@@ -1,31 +1,32 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <functional>
 
-class UIManager;
-enum class UIElementType;
+class UILayer;
 
 class UIElement {
 public:
-    UIElement(UIManager* l_uiManager) : m_uiManager(l_uiManager), m_visible(true), m_active(true) {}
+    UIElement() : m_isVisible(true), m_isActive(true) {}
     virtual ~UIElement() = default;
-    
-    virtual void OnCreate() = 0;
-    virtual void OnDestroy() = 0;
-    virtual void Update(const sf::Time& l_deltaTime) = 0;
-    virtual void Draw() = 0;
 
-    UIManager* GetUIManager() { return m_uiManager; }
+    virtual void Update(const sf::Time& deltaTime) = 0;
+    virtual void Draw(sf::RenderTarget& target) = 0;
     
-    void SetPosition(const sf::Vector2f& l_pos) { m_position = l_pos; }
-    void SetVisible(const bool& l_visible) { m_visible = l_visible; }
-    bool IsVisible()const { return m_visible; }
-    void SetActive(const bool& l_active) { m_active = l_active; }
-    bool IsActive()const { return m_active; }
+    void SetPosition(const sf::Vector2f& position) { m_position = position; }
+    const sf::Vector2f& GetPosition() const { return m_position; }
     
+    void SetVisible(bool visible) { m_isVisible = visible; }
+    bool IsVisible() const { return m_isVisible; }
+    
+    void SetActive(bool active) { m_isActive = active; }
+    bool IsActive() const { return m_isActive; }
+
+    virtual bool Contains(const sf::Vector2f& point) const = 0;
+
 protected:
-    UIManager* m_uiManager;
     sf::Vector2f m_position;
-    bool m_visible;
-    bool m_active;
+    bool m_isVisible;
+    bool m_isActive;
 };
+

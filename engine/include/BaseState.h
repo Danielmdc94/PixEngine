@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "UILayer.h"
 
 class StateManager;
 enum class StateType;
@@ -22,6 +23,7 @@ public:
 
 	StateManager* GetStateManager() { return m_stateManager; }
 	sf::View& GetView() { return m_view; }
+	UILayer* GetUILayer() { return &m_uiLayer; }
 
 	void SetTransparent(const bool& l_transparent) { m_transparent = l_transparent; }
 	bool IsTransparent()const { return m_transparent; }
@@ -31,6 +33,8 @@ public:
 protected:
 	StateManager* m_stateManager;
 	sf::View m_view;
+	UILayer m_uiLayer;
+
 	bool m_transparent;
 	bool m_transcendent;
 };

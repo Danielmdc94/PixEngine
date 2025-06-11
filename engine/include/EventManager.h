@@ -43,17 +43,17 @@ struct EventDetails
 		Clear();
 	}
 	std::string m_name;
-	sf::Vector2i m_size;
+	sf::Vector2f m_size;
 	sf::Uint32 m_textEntered;
-	sf::Vector2i m_mouse;
+	sf::Vector2f m_mouse;
 	int m_mouseWheelDelta;
 	int m_keyCode;
 
 	void Clear()
 	{
-		m_size = sf::Vector2i(0, 0);
+		m_size = sf::Vector2f(0, 0);
 		m_textEntered = 0;
-		m_mouse = sf::Vector2i(0, 0);
+		m_mouse = sf::Vector2f(0, 0);
 		m_mouseWheelDelta = 0;
 		m_keyCode = -1;
 	}
