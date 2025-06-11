@@ -9,19 +9,19 @@
 class UILayer {
 public:
     template<typename T, typename... Args>
-    T* CreateElement(Args&&... args) {
+    T* CreateElement(Args&&... l_args) {
         static_assert(std::is_base_of<UIElement, T>::value, "T must inherit from UIElement");
-        auto element = std::make_unique<T>(std::forward<Args>(args)...);
+        auto element = std::make_unique<T>(std::forward<Args>(l_args)...);
         T* ptr = element.get();
         m_elements.push_back(std::move(element));
         return ptr;
     }
 
-    void Update(const sf::Time& deltaTime);
-    void Draw(sf::RenderTarget& target);
+    void Update(const sf::Time& l_deltaTime);
+    void Draw(sf::RenderTarget& l_target);
 
-    void HandleMouseMove(const sf::Vector2f& mousePos);
-    void HandleClick(const sf::Vector2f& mousePos);
+    void HandleMouseMove(const sf::Vector2f& l_mousePos);
+    void HandleClick(const sf::Vector2f& l_mousePos);
 
     void Clear();
 

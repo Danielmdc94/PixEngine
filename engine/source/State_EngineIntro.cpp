@@ -28,7 +28,7 @@ void State_EngineIntro::OnCreate()
 
 	sf::FloatRect textRect = m_textLogo.getLocalBounds();
 	m_textLogo.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-	m_textLogo.setPosition(windowSize.x / 2.0f, windowSize.y / 2.0f);
+	m_textLogo.setPosition(static_cast<float>(windowSize.x) / 2.0f, static_cast<float>(windowSize.y) / 2.0f);
 
 	m_textContinue.setFont(*fontManager->GetResource("EngineFont"));
 	m_textContinue.setString(sf::String("Press SPACE to continue"));
@@ -38,7 +38,7 @@ void State_EngineIntro::OnCreate()
 
 	textRect = m_textContinue.getLocalBounds();
 	m_textContinue.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-	m_textContinue.setPosition(windowSize.x / 2.0f, windowSize.y / 1.2f);
+	m_textContinue.setPosition(static_cast<float>(windowSize.x) / 2.0f, static_cast<float>(windowSize.y) / 1.2f);
 	
 	m_musicPlayed = false;
 

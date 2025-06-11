@@ -2,8 +2,6 @@
 
 #include "UIElement.h"
 #include <SFML/Graphics.hpp>
-#include <functional>
-#include <string>
 
 class UIButton : public UIElement {
 public:
@@ -11,16 +9,16 @@ public:
 
 	UIButton();
 
-	void SetSize(const sf::Vector2f& size);
-	void SetText(const std::string& text, const sf::Font& font);
-	void SetCallback(Callback callback);
+	void SetSize(const sf::Vector2f& l_size);
+	void SetText(const std::string& l_text, const sf::Font& l_font, unsigned int l_charSize);
+	void SetCallback(Callback l_callback);
 
-	void Update(const sf::Time& deltaTime) override;
-	void Draw(sf::RenderTarget& target) override;
+	void Update(const sf::Time& l_deltaTime) override;
+	void Draw(sf::RenderTarget& l_target) override;
 
-	bool Contains(const sf::Vector2f& point) const override;
+	bool Contains(const sf::Vector2f& l_point) const override;
 
-	void OnHover(bool isHovered);
+	void OnHover(bool l_isHovered);
 	void OnClick();
 
 private:

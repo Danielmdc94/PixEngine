@@ -5,7 +5,7 @@ void State_EngineMenu::OnCreate()
 	UIButton* playButton = m_uiLayer.CreateElement<UIButton>();
 	playButton->SetPosition({100, 100});
 	playButton->SetSize({200, 50});
-	playButton->SetText("Play", *m_stateManager->GetContext()->m_fontManager->GetResource("EngineFont"));
+	playButton->SetText("Play", *m_stateManager->GetContext()->m_fontManager->GetResource("EngineFont"), 32);
 	playButton->SetCallback([]() { std::cout << "Play button clicked!\n"; });
 
 
