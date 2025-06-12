@@ -1,15 +1,13 @@
 #pragma once
 
-#include <iostream>
-
 #include "UILayer.h"
 #include "UIButton.h"
 
 class UILayer_EngineMenu : public UILayer
 {
 public:
-	UILayer_EngineMenu() = default;
+	explicit UILayer_EngineMenu(BaseState* l_owner) : UILayer(l_owner) {}
 	virtual ~UILayer_EngineMenu() = default;
 
-	void SetupButtons(const sf::Font& font);
+	void OnCreate() override;
 };

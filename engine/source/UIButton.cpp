@@ -1,11 +1,9 @@
 #include "UIButton.h"
 
-#include <iostream>
-
-UIButton::UIButton() : m_isHovered(false)
+UIButton::UIButton()
 {
-	m_shape.setFillColor(sf::Color::White);
-	m_text.setFillColor(sf::Color::Black);
+	m_shape.setFillColor(sf::Color::Blue);
+	m_text.setFillColor(sf::Color::White);
 }
 
 void UIButton::SetSize(const sf::Vector2f& l_size)
@@ -52,11 +50,6 @@ void UIButton::Draw(sf::RenderTarget& l_target)
 bool UIButton::Contains(const sf::Vector2f& l_point) const
 {
 	return m_shape.getGlobalBounds().contains(l_point);
-}
-
-void UIButton::OnHover(bool l_isHovered)
-{
-	m_isHovered = l_isHovered;
 }
 
 void UIButton::OnClick()

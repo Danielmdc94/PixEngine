@@ -7,8 +7,17 @@
 #include "UIElement.h"
 #include "UIButton.h"
 
+class BaseState;
+enum class StateType;
+
 class UILayer {
 public:
+    UILayer(BaseState* l_owner) : m_owner(l_owner) {}
+    virtual ~UILayer() = default;
+
+    virtual void OnCreate();
+    virtual void OnDestroy();
+    
     template<typename T, typename... Args>
     T* CreateElement(Args&&... l_args) {
         static_assert(std::is_base_of<UIElement, T>::value, "T must inherit from UIElement");
@@ -21,11 +30,15 @@ public:
     void Update(const sf::Time& l_deltaTime);
     void Draw(sf::RenderTarget& l_target);
 
+    BaseState* GetOwner() const { return m_owner; }
+
     void HandleClick(EventDetails* l_details);
     void HandleMouseMove(EventDetails* l_details);
 
     void Clear();
-
-private:
+    
+protected:
+    BaseState* m_owner;
+    
     std::vector<std::unique_ptr<UIElement>> m_elements;
 };

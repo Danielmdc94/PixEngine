@@ -18,8 +18,6 @@ public:
 	void Update(const sf::Time& l_deltaTime) override;
 	void Draw() override;
 
-	void HandleClick(EventDetails* details) override;
-	void HandleMouseMove(EventDetails* details) override;
 	void Continue(EventDetails* l_details);
 
 private:

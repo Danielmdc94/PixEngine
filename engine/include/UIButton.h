@@ -18,7 +18,6 @@ public:
 
 	bool Contains(const sf::Vector2f& l_point) const override;
 
-	void OnHover(bool l_isHovered);
 	void OnClick();
 
 private:
@@ -26,6 +25,5 @@ private:
 
 	sf::RectangleShape m_shape;
 	sf::Text m_text;
-	bool m_isHovered;
 	Callback m_callback;
 };
