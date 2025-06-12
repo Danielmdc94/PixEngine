@@ -2,21 +2,22 @@
 
 void State_EngineMenu::OnCreate()
 {
-	UIButton* playButton = m_uiLayer.CreateElement<UIButton>();
-	playButton->SetPosition({100, 100});
-	playButton->SetSize({200, 50});
-	playButton->SetText("Play", *m_stateManager->GetContext()->m_fontManager->GetResource("EngineFont"), 32);
-	playButton->SetCallback([]() { std::cout << "Play button clicked!\n"; });
-
-
+	auto font = m_stateManager->GetContext()->m_fontManager->GetResource("EngineFont");
+	if (font && GetMenuUILayer())
+	{
+		GetMenuUILayer()->SetupButtons(*font);
+	}
+	
 	EventManager* eventManager = m_stateManager->GetContext()->m_eventManager;
 	eventManager->AddCallback(StateType::EngineMenu, "Mouse_Left", &State_EngineMenu::HandleClick, this);
+	eventManager->AddCallback(StateType::EngineMenu, "Mouse_Move", &State_EngineMenu::HandleMouseMove, this);
 }
 
 void State_EngineMenu::OnDestroy()
 {
 	EventManager* eventManager = m_stateManager->GetContext()->m_eventManager;
-	eventManager->RemoveCallback(StateType::EngineIntro, "Mouse_Left");
+	eventManager->RemoveCallback(StateType::EngineMenu, "Mouse_Left");
+	eventManager->RemoveCallback(StateType::EngineMenu, "Mouse_Move");
 }
 
 void State_EngineMenu::Activate()
@@ -31,24 +32,29 @@ void State_EngineMenu::Deactivate()
 
 void State_EngineMenu::Update(const sf::Time& l_deltaTime)
 {
-	m_uiLayer.Update(l_deltaTime);
+	if (m_uiLayer)
+		m_uiLayer->Update(l_deltaTime);
 
 }
 
 void State_EngineMenu::Draw()
 {
 	sf::RenderWindow* window = m_stateManager->GetContext()->m_window->GetRenderWindow();
-	m_uiLayer.Draw(*window);
-}
-
-void State_EngineMenu::HandleMouseMove(const sf::Vector2f& mousePos)
-{
-	m_uiLayer.HandleMouseMove(mousePos);
+	if (m_uiLayer && window)
+		m_uiLayer->Draw(*window);
 }
 
 void State_EngineMenu::HandleClick(EventDetails* details)
 {
-	sf::Vector2f mousePos = details->m_mouse;
-	m_uiLayer.HandleClick(mousePos);
+	m_uiLayer->HandleClick(details);
 }
 
+void State_EngineMenu::HandleMouseMove(EventDetails* details)
+{
+	m_uiLayer->HandleMouseMove(details);
+}
+
+UILayer_EngineMenu* State_EngineMenu::GetMenuUILayer() const
+{
+	return static_cast<UILayer_EngineMenu*>(m_uiLayer.get());
+}

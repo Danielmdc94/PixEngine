@@ -96,6 +96,16 @@ void State_EngineIntro::Draw()
 	}
 }
 
+void State_EngineIntro::HandleClick(EventDetails* details)
+{
+	
+}
+
+void State_EngineIntro::HandleMouseMove(EventDetails* details)
+{
+	
+}
+
 void State_EngineIntro::Continue(EventDetails* l_details)
 {
 	if (m_timePassed >= 2.5f)

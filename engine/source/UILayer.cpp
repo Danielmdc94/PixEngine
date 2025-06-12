@@ -22,28 +22,33 @@ void UILayer::Draw(sf::RenderTarget& target)
     }
 }
 
-void UILayer::HandleMouseMove(const sf::Vector2f& l_mousePos)
+void UILayer::HandleClick(EventDetails* l_details)
 {
     for (auto& element : m_elements)
     {
         if (auto* button = dynamic_cast<UIButton*>(element.get()))
         {
-            button->OnHover(button->Contains(l_mousePos));
-        }
-    }
-}
-
-void UILayer::HandleClick(const sf::Vector2f& l_mousePos)
-{
-    for (auto& element : m_elements)
-    {
-        if (auto* button = dynamic_cast<UIButton*>(element.get()))
-        {
-            if (button->Contains(l_mousePos))
+            if (button->Contains(l_details->m_mouse))
             {
                 button->OnClick();
                 break;
             }
+        }
+    }
+}
+
+void UILayer::HandleMouseMove(EventDetails* l_details)
+{
+    for (auto& element : m_elements)
+    {
+        if (auto* button = dynamic_cast<UIButton*>(element.get()))
+        {
+            if (button->Contains(l_details->m_mouse))
+            {
+                button->OnHover(true);
+                break;
+            }
+            button->OnHover(false);
         }
     }
 }

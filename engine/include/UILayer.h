@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include <SFML/Graphics.hpp>
+#include "EventManager.h"
 #include "UIElement.h"
 #include "UIButton.h"
 
@@ -20,8 +21,8 @@ public:
     void Update(const sf::Time& l_deltaTime);
     void Draw(sf::RenderTarget& l_target);
 
-    void HandleMouseMove(const sf::Vector2f& l_mousePos);
-    void HandleClick(const sf::Vector2f& l_mousePos);
+    void HandleClick(EventDetails* l_details);
+    void HandleMouseMove(EventDetails* l_details);
 
     void Clear();
 

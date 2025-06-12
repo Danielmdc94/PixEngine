@@ -73,6 +73,11 @@ void EventManager::HandleEvent(sf::Event& l_event)
 			{
 				if (sfmlEvent == EventType::MouseWheel)
 					bind->m_details.m_mouseWheelDelta = l_event.mouseWheel.delta;
+				if (sfmlEvent == EventType::MouseMoved)
+				{
+					bind->m_details.m_mouse.x = l_event.mouseMove.x;
+					bind->m_details.m_mouse.y = l_event.mouseMove.y;
+				}
 				else if (sfmlEvent == EventType::WindowResized)
 				{
 					bind->m_details.m_size.x = l_event.size.width;

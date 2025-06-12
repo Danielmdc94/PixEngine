@@ -1,5 +1,7 @@
 #include "UIButton.h"
 
+#include <iostream>
+
 UIButton::UIButton() : m_isHovered(false)
 {
 	m_shape.setFillColor(sf::Color::White);
@@ -32,7 +34,7 @@ void UIButton::Update(const sf::Time& l_deltaTime)
 		return;
 	}
 
-	m_shape.setFillColor(m_isHovered ? sf::Color(200, 200, 200) : sf::Color::Blue);
+	m_shape.setFillColor(m_isHovered ? sf::Color::Red : sf::Color::Blue);
 }
 
 void UIButton::Draw(sf::RenderTarget& l_target)

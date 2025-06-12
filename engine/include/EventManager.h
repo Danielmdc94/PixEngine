@@ -18,6 +18,7 @@ enum class EventType
 	GainedFocus = sf::Event::GainedFocus,
 	LostFocus = sf::Event::LostFocus,
 	MouseEntered = sf::Event::MouseEntered,
+	MouseMoved = sf::Event::MouseMoved,
 	MouseLeft = sf::Event::MouseLeft,
 	Closed = sf::Event::Closed,
 	TextEntered = sf::Event::TextEntered,

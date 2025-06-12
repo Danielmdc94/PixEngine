@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "UILayer.h"
+#include "EventManager.h"
 
 class StateManager;
 enum class StateType;
@@ -16,14 +17,22 @@ public:
 
 	virtual void OnCreate() = 0;
 	virtual void OnDestroy() = 0;
+	
 	virtual void Activate() = 0;
 	virtual void Deactivate() = 0;
+	
 	virtual void Update(const sf::Time& l_deltaTime) = 0;
 	virtual void Draw() = 0;
-
+	
+	virtual void HandleClick(EventDetails* details) = 0;
+	virtual void HandleMouseMove(EventDetails* details) = 0;
+	
 	StateManager* GetStateManager() { return m_stateManager; }
 	sf::View& GetView() { return m_view; }
-	UILayer* GetUILayer() { return &m_uiLayer; }
+	UILayer* GetUILayer() { return m_uiLayer.get(); }
+
+	bool HasUILayer() const { return m_uiLayer != nullptr; }
+	void CreateUILayer() { m_uiLayer = std::make_unique<UILayer>(); }
 
 	void SetTransparent(const bool& l_transparent) { m_transparent = l_transparent; }
 	bool IsTransparent()const { return m_transparent; }
@@ -33,7 +42,8 @@ public:
 protected:
 	StateManager* m_stateManager;
 	sf::View m_view;
-	UILayer m_uiLayer;
+	
+	std::unique_ptr<UILayer> m_uiLayer;
 
 	bool m_transparent;
 	bool m_transcendent;
