@@ -7,7 +7,8 @@ void UILayer::OnCreate()
     EventManager* eventManager = m_owner->GetStateManager()->GetContext()->m_eventManager;
     StateType currentState = eventManager->GetCurrentState();
         
-    eventManager->AddCallback(currentState, "LMouse_Down", &UILayer::HandleClick, this);
+    eventManager->AddCallback(currentState, "LMouse_Down", &UILayer::HandleLMouseDown, this);
+    eventManager->AddCallback(currentState, "LMouse_Up", &UILayer::HandleLMouseUp, this);
     eventManager->AddCallback(currentState, "Mouse_Move", &UILayer::HandleMouseMove, this);
 }
 
@@ -44,7 +45,7 @@ void UILayer::Draw(sf::RenderTarget& target)
     }
 }
 
-void UILayer::HandleClick(EventDetails* l_details)
+void UILayer::HandleLMouseDown(EventDetails* l_details)
 {
     for (auto& element : m_elements)
     {
@@ -52,7 +53,22 @@ void UILayer::HandleClick(EventDetails* l_details)
         {
             if (button->Contains(l_details->m_mouse))
             {
-                button->OnClick();
+                button->OnLMouseDown();
+                break;
+            }
+        }
+    }
+}
+
+void UILayer::HandleLMouseUp(EventDetails* l_details)
+{
+    for (auto& element : m_elements)
+    {
+        if (auto* button = dynamic_cast<UIButton*>(element.get()))
+        {
+            if (button->Contains(l_details->m_mouse))
+            {
+                button->OnLMouseUp();
                 break;
             }
         }
@@ -71,6 +87,7 @@ void UILayer::HandleMouseMove(EventDetails* l_details)
                 break;
             }
             button->SetHovered(false);
+            button->SetClicked(false);
         }
     }
 }

@@ -15,6 +15,7 @@ public:
     UILayer(BaseState* l_owner) : m_owner(l_owner) {}
     virtual ~UILayer() = default;
 
+    
     virtual void OnCreate();
     virtual void OnDestroy();
     
@@ -32,7 +33,8 @@ public:
 
     BaseState* GetOwner() const { return m_owner; }
 
-    void HandleClick(EventDetails* l_details);
+    void HandleLMouseDown(EventDetails* l_details);
+    void HandleLMouseUp(EventDetails* l_details);
     void HandleMouseMove(EventDetails* l_details);
 
     void Clear();

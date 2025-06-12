@@ -7,7 +7,7 @@ class UILayer;
 
 class UIElement {
 public:
-    UIElement() : m_isVisible(true), m_isActive(true), m_isHovered(false) {}
+    UIElement() : m_isVisible(true), m_isActive(true), m_isHovered(false), m_isClicked(false) {}
     virtual ~UIElement() = default;
 
     virtual void Update(const sf::Time& l_deltaTime) = 0;
@@ -25,6 +25,9 @@ public:
     void SetHovered(bool l_hovered) { m_isHovered = l_hovered; }
     bool IsHovered() const { return m_isHovered; }
 
+    void SetClicked(bool l_clicked) { m_isClicked = l_clicked; }
+    bool IsClicked() const { return m_isClicked; }
+
     virtual bool Contains(const sf::Vector2f& l_point) const = 0;
 
 protected:
@@ -32,5 +35,6 @@ protected:
     bool m_isVisible;
     bool m_isActive;
     bool m_isHovered;
+    bool m_isClicked;
 };
 

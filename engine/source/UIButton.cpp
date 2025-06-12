@@ -32,7 +32,7 @@ void UIButton::Update(const sf::Time& l_deltaTime)
 		return;
 	}
 
-	m_shape.setFillColor(m_isHovered ? sf::Color::Red : sf::Color::Blue);
+	m_shape.setFillColor(m_isClicked ? sf::Color::Green : m_isHovered ? sf::Color::Red : sf::Color::Blue);
 }
 
 void UIButton::Draw(sf::RenderTarget& l_target)
@@ -52,12 +52,21 @@ bool UIButton::Contains(const sf::Vector2f& l_point) const
 	return m_shape.getGlobalBounds().contains(l_point);
 }
 
-void UIButton::OnClick()
+void UIButton::OnLMouseDown()
 {
 	if (m_callback && m_isActive && m_isVisible)
 	{
+		m_isClicked = true;
+	}
+}
+
+void UIButton::OnLMouseUp()
+{
+	if (m_callback && m_isActive && m_isVisible && m_isHovered && m_isClicked)
+	{
 		m_callback();
 	}
+	m_isClicked = false;
 }
 
 void UIButton::CenterText()

@@ -18,7 +18,8 @@ public:
 
 	bool Contains(const sf::Vector2f& l_point) const override;
 
-	void OnClick();
+	void OnLMouseDown();
+	void OnLMouseUp();
 
 private:
 	void CenterText();
