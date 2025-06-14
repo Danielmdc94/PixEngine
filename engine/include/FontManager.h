@@ -16,7 +16,7 @@ public:
 		{
 			delete font;
 			font = nullptr;
-			std::cerr << "! Failed to load font: " << l_path << std::endl;
+			std::cerr << "! Failed to load font: " << l_path << '\n';
 		}
 		return font;
 	}

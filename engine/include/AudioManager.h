@@ -16,7 +16,7 @@ public:
 		{
 			delete audio;
 			audio = nullptr;
-			std::cerr << "! Failed to load audio file: " << l_path << std::endl;
+			std::cerr << "! Failed to load audio file: " << l_path << '\n';
 		}
 		return audio;
 	}

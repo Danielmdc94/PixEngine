@@ -16,7 +16,7 @@ public:
 		{
 			delete texture;
 			texture = nullptr;
-			std::cerr << "! Failed to load texture: " << l_path << std::endl;
+			std::cerr << "! Failed to load texture: " << l_path << '\n';
 		}
 		return texture;
 	}
