@@ -10,7 +10,8 @@
 class BaseState;
 enum class StateType;
 
-class UILayer {
+class UILayer
+{
 public:
     UILayer(BaseState* l_owner) : m_owner(l_owner) {}
     virtual ~UILayer() = default;

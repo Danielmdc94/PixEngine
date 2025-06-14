@@ -3,7 +3,8 @@
 #include "UIElement.h"
 #include <SFML/Graphics.hpp>
 
-class UIButton : public UIElement {
+class UIButton : public UIElement
+{
 public:
 	using Callback = std::function<void()>;
 

@@ -16,8 +16,9 @@ void UILayer::OnDestroy()
 {
     EventManager* eventManager = m_owner->GetStateManager()->GetContext()->m_eventManager;
     StateType currentState = eventManager->GetCurrentState();
-        
+    
     eventManager->RemoveCallback(currentState, "LMouse_Down");
+    eventManager->RemoveCallback(currentState, "LMouse_Up");
     eventManager->RemoveCallback(currentState, "Mouse_Move");
 
     Clear();

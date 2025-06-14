@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "../include/ResourceManager.h"
+#include "ResourceManager.h"
 
 class TextureManager : public ResourceManager<TextureManager, sf::Texture>
 {

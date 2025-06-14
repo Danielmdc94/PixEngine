@@ -11,11 +11,22 @@ void UILayer_EngineMenu::OnCreate()
 	playButton->SetPosition({100.f, 100.f});
 	playButton->SetSize({200.f, 50.f});
 	playButton->SetText("Play", *font, 32);
-	playButton->SetCallback([]() { std::cout << "Play button clicked!\n"; });
+	playButton->SetCallback([this]() { PlayButton(); });
 
 	UIButton* quitButton = CreateElement<UIButton>();
 	quitButton->SetPosition({100.f, 170.f});
 	quitButton->SetSize({200.f, 50.f});
 	quitButton->SetText("Quit", *font, 32);
-	quitButton->SetCallback([]() { std::cout << "Quit button clicked!\n"; });
+	quitButton->SetCallback([this]() { QuitButton(); });
+}
+
+void UILayer_EngineMenu::PlayButton()
+{
+	std::cout << "Play button clicked! But there is nothing to play...\n";
+}
+
+void UILayer_EngineMenu::QuitButton()
+{
+	m_owner->GetStateManager()->SwitchTo(StateType::EngineIntro);
+	m_owner->GetStateManager()->Remove(StateType::EngineMenu);
 }

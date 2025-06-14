@@ -103,4 +103,12 @@ void State_EngineIntro::Continue(EventDetails* l_details)
 		m_stateManager->SwitchTo(StateType::EngineMenu);
 		m_stateManager->Remove(StateType::EngineIntro);
 	}
+	else
+	{
+		m_spriteLogo.setColor(sf::Color(255, 255, 255, 255));
+		m_timePassed = 2.5f;
+		m_timerSpriteLogo = 2.5f;
+		m_timerTextLogo = 2.5f;
+		m_timerTextContinue = 0.f;
+	}
 }

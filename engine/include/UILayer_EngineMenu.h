@@ -10,4 +10,6 @@ public:
 	virtual ~UILayer_EngineMenu() = default;
 
 	void OnCreate() override;
+	void PlayButton();
+	void QuitButton();
 };
