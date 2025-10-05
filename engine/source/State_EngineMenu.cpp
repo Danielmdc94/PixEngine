@@ -7,11 +7,7 @@ void State_EngineMenu::OnCreate()
 
 void State_EngineMenu::OnDestroy()
 {
-	if (m_uiLayer)
-	{
-		m_uiLayer->OnDestroy();
-		m_uiLayer = nullptr;
-	}
+	ClearUILayer();
 }
 
 void State_EngineMenu::Activate()

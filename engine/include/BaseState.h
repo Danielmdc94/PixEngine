@@ -41,8 +41,16 @@ public:
 		return static_cast<T*>(m_uiLayer.get());
 	}
 
+	UILayer* GetUILayerRaw() const { return m_uiLayer.get(); }
 	bool HasUILayer() const { return m_uiLayer != nullptr; }
 
+	void ClearUILayer() {
+		if (m_uiLayer) {
+			m_uiLayer->OnDestroy();
+			m_uiLayer.reset();
+		}
+	}
+	
 	void SetTransparent(const bool& l_transparent) { m_transparent = l_transparent; }
 	bool IsTransparent()const { return m_transparent; }
 	void SetTranscendent(const bool& l_transcendence) { m_transcendent = l_transcendence; }

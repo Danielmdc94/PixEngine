@@ -5,23 +5,37 @@
 void UILayer::OnCreate()
 {
     EventManager* eventManager = m_owner->GetStateManager()->GetContext()->m_eventManager;
-    StateType currentState = eventManager->GetCurrentState();
+
+    m_boundState = eventManager->GetCurrentState();
         
-    eventManager->AddCallback(currentState, "LMouse_Down", &UILayer::HandleLMouseDown, this);
-    eventManager->AddCallback(currentState, "LMouse_Up", &UILayer::HandleLMouseUp, this);
-    eventManager->AddCallback(currentState, "Mouse_Move", &UILayer::HandleMouseMove, this);
+    eventManager->AddCallback(m_boundState, "LMouse_Down", &UILayer::HandleLMouseDown, this);
+    eventManager->AddCallback(m_boundState, "LMouse_Up", &UILayer::HandleLMouseUp, this);
+    eventManager->AddCallback(m_boundState, "Mouse_Move", &UILayer::HandleMouseMove, this);
+
+    m_callbacksBound = true;
+    //std::cout << "UILayer created! boundState=" << static_cast<int>(m_boundState) << " this=" << this << "\n";
 }
 
 void UILayer::OnDestroy()
 {
-    EventManager* eventManager = m_owner->GetStateManager()->GetContext()->m_eventManager;
-    StateType currentState = eventManager->GetCurrentState();
-    
-    eventManager->RemoveCallback(currentState, "LMouse_Down");
-    eventManager->RemoveCallback(currentState, "LMouse_Up");
-    eventManager->RemoveCallback(currentState, "Mouse_Move");
-
+    UnbindCallbacks();
     Clear();
+}
+
+void UILayer::UnbindCallbacks()
+{
+    if (!m_callbacksBound)
+    {
+        return;
+    }
+
+    EventManager* eventManager = m_owner->GetStateManager()->GetContext()->m_eventManager;
+
+    eventManager->RemoveCallback(m_boundState, "LMouse_Down");
+    eventManager->RemoveCallback(m_boundState, "LMouse_Up");
+    eventManager->RemoveCallback(m_boundState, "Mouse_Move");
+
+    m_callbacksBound = false;
 }
 
 void UILayer::Update(const sf::Time& deltaTime)
@@ -48,6 +62,11 @@ void UILayer::Draw(sf::RenderTarget& target)
 
 void UILayer::HandleLMouseDown(EventDetails* l_details)
 {
+    std::cout << "[HandleClick] this=" << this
+              << " m_elements.size=" << m_elements.size()
+              << " data=" << static_cast<const void*>(m_elements.data())
+              << "\n";
+    
     for (auto& element : m_elements)
     {
         if (auto* button = dynamic_cast<UIButton*>(element.get()))
@@ -96,4 +115,5 @@ void UILayer::HandleMouseMove(EventDetails* l_details)
 void UILayer::Clear()
 {
     m_elements.clear();
+    m_elements.shrink_to_fit();
 }

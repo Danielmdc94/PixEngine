@@ -143,7 +143,7 @@ void EventManager::Update()
 				if (callItr != otherCallbacks->second.end())
 					callItr->second(&bind->m_details);
 			}
-			std::cout << "Event: " << bind->m_name << std::endl;
+			//std::cout << "Event: " << bind->m_name << std::endl;
 		}
 		bind->count = 0;
 		bind->m_details.Clear();

@@ -42,6 +42,11 @@ public:
     
 protected:
     BaseState* m_owner;
-    
     std::vector<std::unique_ptr<UIElement>> m_elements;
+
+private:
+    StateType m_boundState{};
+    bool m_callbacksBound { false };
+
+    void UnbindCallbacks();
 };

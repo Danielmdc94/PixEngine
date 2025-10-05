@@ -3,6 +3,11 @@
 
 void UILayer_EngineMenu::OnCreate()
 {
+	std::cout << "[OnCreate] this=" << this
+			  << " m_elements.size=" << m_elements.size()
+			  << " data=" << static_cast<const void*>(m_elements.data())
+			  << "\n";
+
 	UILayer::OnCreate();
 
 	auto font = m_owner->GetStateManager()->GetContext()->m_fontManager->GetResource("EngineFont");
@@ -18,6 +23,12 @@ void UILayer_EngineMenu::OnCreate()
 	quitButton->SetSize({200.f, 50.f});
 	quitButton->SetText("Quit", *font, 32);
 	quitButton->SetCallback([this]() { QuitButton(); });
+	
+	std::cout << "[OnCreate end] this=" << this
+			  << " m_elements.size=" << m_elements.size()
+			  << " data=" << static_cast<const void*>(m_elements.data())
+			  << "\n";
+
 }
 
 void UILayer_EngineMenu::PlayButton()
