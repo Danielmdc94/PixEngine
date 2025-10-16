@@ -22,4 +22,6 @@ struct SharedContext
 	FontManager* m_fontManager;
 	EntityManager* m_entityManager;
 	StateManager* m_stateManager;
+
+	std::string version = "v0.0.0";
 };

@@ -25,6 +25,7 @@ private:
 	sf::Sprite m_spriteLogo;
 	sf::Text m_textLogo;
 	sf::Text m_textContinue;
+	sf::Text m_textVersion;
 	sf::Music* m_sfxLogo;
 
 	float m_timePassed = 0.f;

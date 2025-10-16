@@ -15,7 +15,6 @@ class UILayer
 public:
     UILayer(BaseState* l_owner) : m_owner(l_owner) {}
     virtual ~UILayer() = default;
-
     
     virtual void OnCreate();
     virtual void OnDestroy();

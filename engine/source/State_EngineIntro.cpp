@@ -39,6 +39,15 @@ void State_EngineIntro::OnCreate()
 	textRect = m_textContinue.getLocalBounds();
 	m_textContinue.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
 	m_textContinue.setPosition(static_cast<float>(windowSize.x) / 2.0f, static_cast<float>(windowSize.y) / 1.2f);
+
+	m_textVersion.setFont(*fontManager->GetResource("EngineFont"));
+	m_textVersion.setString(GetStateManager()->GetContext()->version);
+	m_textVersion.setCharacterSize(32);
+	m_textVersion.setOutlineColor(sf::Color::Black);
+	m_textVersion.setOutlineThickness(1.f);
+	textRect = m_textVersion.getLocalBounds();
+	m_textVersion.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	m_textVersion.setPosition(static_cast<float>(windowSize.x) - textRect.width, static_cast<float>(windowSize.y) - textRect.height);
 	
 	m_musicPlayed = false;
 
@@ -94,6 +103,7 @@ void State_EngineIntro::Draw()
         	if (m_timerTextContinue >= 1.f)
         		m_timerTextContinue = 0.f;
 	}
+	window->draw(m_textVersion);
 }
 
 void State_EngineIntro::Continue(EventDetails* l_details)

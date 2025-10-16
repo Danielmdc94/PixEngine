@@ -1,50 +1,67 @@
-#include "../include/EntityManager.h"
-#include "../include/SharedContext.h"
-
-#include <iostream>
+#include "EntityManager.h"
+#include "SharedContext.h"
+#include "Player.h"
 
 EntityManager::EntityManager(SharedContext* context) : m_context(context)
 {
-	
+	m_nextId = 0;
+	RegisterEntity<Player>(EntityType::Player);
+	//RegisterEntity<Enemy>(EntityType::Enemy);
 }
 
 EntityManager::~EntityManager()
 {
-
+	ClearEntities();
 }
 
-void EntityManager::Update(float l_deltaTime)
+void EntityManager::Update(const sf::Time& l_deltaTime)
 {
-	for (const auto& entity : m_entities)
+	for (auto& [id, entity] : m_entities)
 	{
-		entity->Update(l_deltaTime);
+		if (!entity->IsMarkedForDeletion())
+		{
+			entity->Update(l_deltaTime);
+		}
 	}
 
-	std::erase_if(m_entities, [](const std::unique_ptr<Entity>& entity)
-		{
-			return entity->IsMarkedForDeletion();
-		});
+	for (auto it = m_entities.begin(); it != m_entities.end(); )
+	{
+		if (it->second->IsMarkedForDeletion())
+			it = m_entities.erase(it);
+		else
+			++it;
+	}
 }
 
 void EntityManager::Draw()
 {
-	for (const auto& entity : m_entities)
+	for (auto& [id, entity] : m_entities)
 	{
-		entity->Draw(GetContext()->m_window->GetRenderWindow());
+		if (!entity->IsMarkedForDeletion())
+        {
+			entity->Draw(GetContext()->m_window->GetRenderWindow());
+        }
 	}
 }
 
-void EntityManager::CreateEntity(const EntityType& l_type)
+Entity* EntityManager::CreateEntity(const EntityType& l_type)
 {
-	std::unique_ptr<Entity> newEntity = nullptr;
-	/*if (l_type == EntityType::Player)
 	{
-		newEntity = std::make_unique<Player>(this);
+		auto it = m_entityFactory.find(l_type);
+		if (it == m_entityFactory.end())
+		{
+			return nullptr;
+		}
+		Entity* entity = it->second();
+		entity->m_id = NextId();
+		m_entities[entity->GetId()] = std::unique_ptr<Entity>(entity);
+		return entity;
 	}
-	else
-		return;*/
+}
 
-	m_entities.push_back(std::move(newEntity));
+EntityID EntityManager::NextId()
+{
+	return m_nextId++;
 }
 
 void EntityManager::ClearEntities()

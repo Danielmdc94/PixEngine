@@ -10,7 +10,7 @@ void UILayer_EngineMenu::OnCreate()
 
 	UILayer::OnCreate();
 
-	auto font = m_owner->GetStateManager()->GetContext()->m_fontManager->GetResource("EngineFont");
+	sf::Font* font = m_owner->GetStateManager()->GetContext()->m_fontManager->GetResource("EngineFont");
 	
 	UIButton* playButton = CreateElement<UIButton>();
 	playButton->SetPosition({100.f, 100.f});
@@ -28,7 +28,6 @@ void UILayer_EngineMenu::OnCreate()
 			  << " m_elements.size=" << m_elements.size()
 			  << " data=" << static_cast<const void*>(m_elements.data())
 			  << "\n";
-
 }
 
 void UILayer_EngineMenu::PlayButton()
