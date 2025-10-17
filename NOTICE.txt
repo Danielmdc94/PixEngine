@@ -1,0 +1,11 @@
+© 2025 Daniel Palacio
+
+All rights reserved. This project and its assets are for personal and educational use only. 
+Commercial use is prohibited unless explicitly agreed in writing.
+
+Attribution:
+- Code: Daniel Palacio
+
+Disclaimer: This project is provided "as-is". The authors are not responsible for any damage or misuse resulting from the use of this software or assets.
+
+When sharing or adapting this project or its assets, this notice and the LICENSE file must be included to ensure proper attribution and compliance with the CC BY-NC 4.0 license.
