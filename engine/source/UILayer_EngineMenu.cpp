@@ -32,7 +32,8 @@ void UILayer_EngineMenu::OnCreate()
 
 void UILayer_EngineMenu::PlayButton()
 {
-	std::cout << "Play button clicked! But there is nothing to play...\n";
+	m_owner->GetStateManager()->SwitchTo(StateType::GameIntro);
+	m_owner->GetStateManager()->Remove(StateType::EngineMenu);
 }
 
 void UILayer_EngineMenu::QuitButton()

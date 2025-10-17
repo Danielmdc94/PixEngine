@@ -8,10 +8,11 @@
 #include "BaseState.h"
 #include "State_EngineIntro.h"
 #include "State_EngineMenu.h"
+#include "State_GameIntro.h"
 
 enum class StateType
 {
-	EngineIntro = 1, EngineMenu, Editor
+	EngineIntro = 1, EngineMenu, GameIntro
 };
 
 using StateContainer = std::vector<std::pair<StateType, BaseState*>>;

@@ -5,7 +5,6 @@
 EntityManager::EntityManager(SharedContext* context) : m_context(context)
 {
 	m_nextId = 0;
-	RegisterEntity<Player>(GameEntityType::Player);
 }
 
 EntityManager::~EntityManager()
