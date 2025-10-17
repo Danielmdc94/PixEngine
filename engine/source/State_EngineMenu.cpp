@@ -3,7 +3,7 @@
 void State_EngineMenu::OnCreate()
 {
 	CreateUILayer<UILayer_EngineMenu>();
-	auto* player = GetStateManager()->GetContext()->m_entityManager->CreateEntity(EntityType::Player);
+	auto* player = GetStateManager()->GetContext()->m_entityManager->CreateEntity(GameEntityType::Player);
 }
 
 void State_EngineMenu::OnDestroy()

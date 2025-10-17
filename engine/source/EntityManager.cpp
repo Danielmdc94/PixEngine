@@ -5,15 +5,14 @@
 EntityManager::EntityManager(SharedContext* context) : m_context(context)
 {
 	m_nextId = 0;
-	RegisterEntity<Player>(EntityType::Player);
-	//RegisterEntity<Enemy>(EntityType::Enemy);
+	RegisterEntity<Player>(GameEntityType::Player);
 }
 
 EntityManager::~EntityManager()
 {
 	ClearEntities();
 }
-
+ 
 void EntityManager::Update(const sf::Time& l_deltaTime)
 {
 	for (auto& [id, entity] : m_entities)
@@ -72,4 +71,14 @@ void EntityManager::ClearEntities()
 SharedContext* EntityManager::GetContext()
 {
 	return m_context;
+}
+
+Entity* EntityManager::GetEntity(EntityID id)
+{
+	auto it = m_entities.find(id);
+	if (it != m_entities.end())
+	{
+		return it->second.get();
+	}
+	return nullptr;
 }
