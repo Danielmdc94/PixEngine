@@ -35,9 +35,9 @@ namespace Utils
 	}
 	#endif
 
-	inline std::string GetResourceDirectory()
+	inline std::string GetGameResourceDirectory()
 	{
-		return GetWorkingDirectory() + std::string("assets/");
+		return GetWorkingDirectory() + std::string("game/assets/");
 	}
 
 	inline std::string GetEngineResourceDirectory()
