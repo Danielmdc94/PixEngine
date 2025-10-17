@@ -12,7 +12,7 @@ public:
 	sf::Music* Load(const std::string& l_path)
 	{
 		sf::Music* audio = new sf::Music();
-		if (!audio->openFromFile(Utils::GetEngineResourceDirectory() + "Audio/" + l_path))
+		if (!audio->openFromFile(Utils::GetEngineResourceDirectory() + "audio/" + l_path))
 		{
 			delete audio;
 			audio = nullptr;

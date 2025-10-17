@@ -12,7 +12,7 @@ public:
 	sf::Texture* Load(const std::string& l_path)
 	{
 		sf::Texture* texture = new sf::Texture();
-		if (!texture->loadFromFile(Utils::GetEngineResourceDirectory() + "Textures/" + l_path))
+		if (!texture->loadFromFile(Utils::GetEngineResourceDirectory() + "textures/" + l_path))
 		{
 			delete texture;
 			texture = nullptr;

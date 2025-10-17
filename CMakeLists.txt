@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.22)
 include(FetchContent)
 
 project(PixEngine VERSION 0.0.1)
+set(TARGET_NAME PixEngine)
 
 # --- Fetch SFML ---
 FetchContent_Declare(
@@ -19,8 +20,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED true)
 set(CMAKE_SUPPRESS_REGENERATION true)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 
-set(TARGET_NAME PixEngine)
-
 # --- Collect source/header files ---
 file(GLOB_RECURSE SOURCES 
     game/source/*.cpp 
@@ -31,19 +30,46 @@ file(GLOB_RECURSE HEADERS
     engine/include/*.h
 )
 
-source_group("source" FILES ${SOURCES})
-source_group("include" FILES ${HEADERS})
+# Function to create a source_group tree matching folder structure
+function(create_source_group PREFIX FILES)
+    foreach(FILE_PATH ${FILES})
+        file(RELATIVE_PATH REL_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${FILE_PATH})
+        get_filename_component(GROUP_PATH ${REL_PATH} PATH)
+        string(REPLACE "/" "\\" GROUP_PATH ${GROUP_PATH})
+        source_group("${PREFIX}\\${GROUP_PATH}" FILES ${FILE_PATH})
+    endforeach()
+endfunction()
+
+create_source_group("source" "${SOURCES}")
+create_source_group("include" "${HEADERS}")
+
+# --- Collect asset and config files ---
+file(GLOB_RECURSE ASSETS 
+    game/assets/*
+    engine/assets/*
+)
+file(GLOB_RECURSE CONFIGS 
+    engine/config/*
+    game/config/*
+)
+source_group("assets" FILES ${ASSETS})
+source_group("config" FILES ${CONFIGS})
 
 # --- Windows icon ---
 if(WIN32)
-    set(WINDOWS_ICON ${CMAKE_CURRENT_SOURCE_DIR}/engine/resources/App.rc)
+    set(WINDOWS_ICON ${CMAKE_CURRENT_SOURCE_DIR}/engine/assets/icon/app.rc)
 endif()
 
 # --- Add executable ---
-add_executable(${TARGET_NAME} MACOSX_BUNDLE ${SOURCES} ${HEADERS} ${WINDOWS_ICON})
+add_executable(${TARGET_NAME} MACOSX_BUNDLE ${SOURCES} ${HEADERS} ${ASSETS} ${CONFIGS} ${RESOURCES})
+
+# --- Include directories ---
 target_include_directories(${TARGET_NAME} PRIVATE game/include engine/include)
+
+# --- Link SFML ---
 target_link_libraries(${TARGET_NAME} PRIVATE sfml-audio sfml-graphics sfml-window sfml-system Shlwapi)
 
+# --- VS startup project ---
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${TARGET_NAME})
 
 # --- Assets root for debugger ---
@@ -85,9 +111,8 @@ endfunction()
 
 copy_assets(${CMAKE_CURRENT_SOURCE_DIR}/engine/assets engine/assets)
 copy_assets(${CMAKE_CURRENT_SOURCE_DIR}/engine/config engine/config)
-copy_assets(${CMAKE_CURRENT_SOURCE_DIR}/engine/resources engine/resources)
-
 copy_assets(${CMAKE_CURRENT_SOURCE_DIR}/game/assets game/assets)
+copy_assets(${CMAKE_CURRENT_SOURCE_DIR}/game/config game/config)
 
 # --- Mac-specific resource handling ---
 if(APPLE)
