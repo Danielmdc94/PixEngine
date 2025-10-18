@@ -1,14 +1,14 @@
-#pragma once
+﻿#pragma once
 
 #include "BaseState.h"
 #include "StateManager.h"
 #include "EventManager.h"
-#include "UILayer_EngineMenu.h"
+#include "UILayer_GameMenu.h"
 
-class State_EngineMenu : public BaseState
+class State_GameMenu : public BaseState
 {
 public:
-	State_EngineMenu(StateManager* l_stateManager) : BaseState(l_stateManager) {}
+	State_GameMenu(StateManager* l_stateManager) : BaseState(l_stateManager) {}
 	
 	void OnCreate() override;
 	void OnDestroy() override;

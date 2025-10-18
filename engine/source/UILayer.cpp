@@ -62,11 +62,6 @@ void UILayer::Draw(sf::RenderTarget& target)
 
 void UILayer::HandleLMouseDown(EventDetails* l_details)
 {
-    std::cout << "[HandleClick] this=" << this
-              << " m_elements.size=" << m_elements.size()
-              << " data=" << static_cast<const void*>(m_elements.data())
-              << "\n";
-    
     for (auto& element : m_elements)
     {
         if (auto* button = dynamic_cast<UIButton*>(element.get()))

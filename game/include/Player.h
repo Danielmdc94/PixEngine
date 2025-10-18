@@ -10,7 +10,6 @@ public:
 	Player(EntityManager* l_entityManager) : Entity(l_entityManager), m_speed(200.f)
 	{
 		m_name = "Player";
-		std::cout << "Player created" << std::endl;
 		m_shape.setSize({50.f, 50.f});
 		m_shape.setFillColor(sf::Color::Cyan);
 		m_shape.setOrigin(m_shape.getSize() / 2.f);

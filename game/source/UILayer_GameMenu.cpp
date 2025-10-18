@@ -1,13 +1,8 @@
-#include "UILayer_EngineMenu.h"
+﻿#include "UILayer_GameMenu.h"
 #include "StateManager.h"
 
-void UILayer_EngineMenu::OnCreate()
+void UILayer_GameMenu::OnCreate()
 {
-	std::cout << "[OnCreate] this=" << this
-			  << " m_elements.size=" << m_elements.size()
-			  << " data=" << static_cast<const void*>(m_elements.data())
-			  << "\n";
-
 	UILayer::OnCreate();
 
 	sf::Font* font = m_owner->GetStateManager()->GetContext()->m_fontManager->GetResource("EngineFont");
@@ -23,21 +18,16 @@ void UILayer_EngineMenu::OnCreate()
 	quitButton->SetSize({200.f, 50.f});
 	quitButton->SetText("Quit", *font, 32);
 	quitButton->SetCallback([this]() { QuitButton(); });
-	
-	std::cout << "[OnCreate end] this=" << this
-			  << " m_elements.size=" << m_elements.size()
-			  << " data=" << static_cast<const void*>(m_elements.data())
-			  << "\n";
 }
 
-void UILayer_EngineMenu::PlayButton()
+void UILayer_GameMenu::PlayButton()
 {
 	m_owner->GetStateManager()->SwitchTo(StateType::GameIntro);
-	m_owner->GetStateManager()->Remove(StateType::EngineMenu);
+	m_owner->GetStateManager()->Remove(StateType::GameMenu);
 }
 
-void UILayer_EngineMenu::QuitButton()
+void UILayer_GameMenu::QuitButton()
 {
 	m_owner->GetStateManager()->SwitchTo(StateType::EngineIntro);
-	m_owner->GetStateManager()->Remove(StateType::EngineMenu);
+	m_owner->GetStateManager()->Remove(StateType::GameMenu);
 }

@@ -110,7 +110,7 @@ void State_EngineIntro::Continue(EventDetails* l_details)
 {
 	if (m_timePassed >= 2.5f)
 	{
-		m_stateManager->SwitchTo(StateType::EngineMenu);
+		m_stateManager->SwitchTo(StateType::GameIntro);
 		m_stateManager->Remove(StateType::EngineIntro);
 	}
 	else

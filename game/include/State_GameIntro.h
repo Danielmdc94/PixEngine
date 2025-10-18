@@ -20,5 +20,5 @@ public:
 	void Continue(EventDetails* l_details);
 
 private:
-
+	sf::Text m_textTitle;
 };

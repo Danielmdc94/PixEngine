@@ -1,10 +1,10 @@
-#include "../include/StateManager.h"
+#include "StateManager.h"
 
 StateManager::StateManager(SharedContext* l_context) : m_context(l_context)
 {
 	RegisterState<State_EngineIntro>(StateType::EngineIntro);
-	RegisterState<State_EngineMenu>(StateType::EngineMenu);
 	RegisterState<State_GameIntro>(StateType::GameIntro);
+	RegisterState<State_GameMenu>(StateType::GameMenu);
 }
 
 StateManager::~StateManager()
