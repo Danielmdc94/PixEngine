@@ -4,6 +4,10 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
+#include "EntityManager.h"
+
+#include "SharedContext.h"
+
 class Player : public Entity
 {
 public:
@@ -44,6 +48,9 @@ public:
 	{
 		l_window->draw(m_shape);
 	}
+
+	sf::Vector2f GetPosition() const { return m_shape.getPosition(); }
+	
 private:
 	// Event callbacks: press
 	void OnMoveUpPressed(EventDetails*)    { m_moveUp = true; }

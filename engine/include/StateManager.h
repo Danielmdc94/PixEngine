@@ -9,6 +9,7 @@
 #include "State_EngineIntro.h"
 #include "State_GameIntro.h"
 #include "State_GameMenu.h"
+#include "State_Game.h"
 
 enum class StateType
 {

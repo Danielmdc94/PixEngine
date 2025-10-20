@@ -22,12 +22,12 @@ void UILayer_GameMenu::OnCreate()
 
 void UILayer_GameMenu::PlayButton()
 {
-	m_owner->GetStateManager()->SwitchTo(StateType::GameIntro);
+	m_owner->GetStateManager()->SwitchTo(StateType::Game);
 	m_owner->GetStateManager()->Remove(StateType::GameMenu);
 }
 
 void UILayer_GameMenu::QuitButton()
 {
-	m_owner->GetStateManager()->SwitchTo(StateType::EngineIntro);
+	m_owner->GetStateManager()->SwitchTo(StateType::GameIntro);
 	m_owner->GetStateManager()->Remove(StateType::GameMenu);
 }

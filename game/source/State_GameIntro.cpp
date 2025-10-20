@@ -7,9 +7,6 @@ void State_GameIntro::OnCreate()
 {
 	FontManager* fontManager = m_stateManager->GetContext()->m_fontManager;
 	sf::Vector2u windowSize = m_stateManager->GetContext()->m_window->GetRenderWindow()->getSize();
-	
-	m_stateManager->GetContext()->m_entityManager->RegisterEntity<Player>(GameEntityType::Player);
-	auto* player = m_stateManager->GetContext()->m_entityManager->CreateEntity(GameEntityType::Player);
 
 	fontManager->RequireResource("EngineFont");
 	m_textTitle.setFont(*fontManager->GetResource("EngineFont"));

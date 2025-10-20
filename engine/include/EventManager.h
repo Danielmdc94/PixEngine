@@ -91,11 +91,13 @@ public:
 	bool AddBinding(Binding* l_binding);
 	bool RemoveBinding(std::string l_name);
 	
-	void SetFocus(const bool& l_focus) { m_hasFocus = l_focus; };
-	void SetCurrentState(StateType l_type) { m_currentState = l_type; };
+	void SetFocus(const bool& l_focus) { m_hasFocus = l_focus; }
+	void SetCurrentState(StateType l_type) { m_currentState = l_type; }
 	
-	StateType GetCurrentState() { return m_currentState; };
-	sf::Vector2i GetMousePosition(sf::RenderWindow* l_wind = nullptr);
+	StateType GetCurrentState() { return m_currentState; }
+	sf::Vector2i GetMousePositionScreen();
+	sf::Vector2i GetMousePositionWindow(sf::RenderWindow* l_wind = nullptr);
+	sf::Vector2f GetMousePositionView(sf::RenderWindow* l_wind = nullptr);
 
 	template<typename T>
 	bool AddCallback(StateType l_state, const std::string& l_name, void(T::* l_func)(EventDetails*), T* l_instance)

@@ -2,7 +2,6 @@
 
 void State_GameMenu::OnCreate()
 {
-	std::cout << "TEST";
 	CreateUILayer<UILayer_GameMenu>();
 }
 

@@ -5,6 +5,7 @@ StateManager::StateManager(SharedContext* l_context) : m_context(l_context)
 	RegisterState<State_EngineIntro>(StateType::EngineIntro);
 	RegisterState<State_GameIntro>(StateType::GameIntro);
 	RegisterState<State_GameMenu>(StateType::GameMenu);
+	RegisterState<State_Game>(StateType::Game);
 }
 
 StateManager::~StateManager()

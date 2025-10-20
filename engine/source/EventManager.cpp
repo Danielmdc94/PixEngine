@@ -91,9 +91,19 @@ void EventManager::HandleEvent(sf::Event& l_event)
 	}
 }
 
-sf::Vector2i EventManager::GetMousePosition(sf::RenderWindow* l_wind)
+sf::Vector2i EventManager::GetMousePositionScreen()
+{
+	return (sf::Mouse::getPosition());
+}
+
+sf::Vector2i EventManager::GetMousePositionWindow(sf::RenderWindow* l_wind)
 {
 	return (l_wind ? sf::Mouse::getPosition(*l_wind) : sf::Mouse::getPosition());
+}
+
+sf::Vector2f EventManager::GetMousePositionView(sf::RenderWindow* l_wind)
+{
+	return (l_wind ? l_wind->mapPixelToCoords(GetMousePositionWindow(l_wind)) : static_cast<sf::Vector2f>(sf::Mouse::getPosition()));
 }
 
 void EventManager::Update()
