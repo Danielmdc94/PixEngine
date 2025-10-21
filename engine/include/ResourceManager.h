@@ -105,6 +105,21 @@ private:
 				m_paths.emplace(pathName, path);
 			}
 			paths.close();
+			paths.open(Utils::GetGameConfigDirectory() + l_pathFile);
+			if (paths.is_open())
+			{
+				std::string line;
+				while (std::getline(paths, line))
+				{
+					std::stringstream keystream(line);
+					std::string pathName;
+					std::string path;
+					keystream >> pathName;
+					keystream >> path;
+					m_paths.emplace(pathName, path);
+				}
+				paths.close();
+			}
 			return;
 		}
 		std::cerr << "! Failed loading the path file: " << l_pathFile << '\n';

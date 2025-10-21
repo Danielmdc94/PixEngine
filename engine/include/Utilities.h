@@ -50,4 +50,9 @@ namespace Utils
 		return GetWorkingDirectory() + std::string("engine/config/");
 	}
 
+	inline std::string GetGameConfigDirectory()
+	{
+		return GetWorkingDirectory() + std::string("game/config/");
+	}
+
 }

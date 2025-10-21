@@ -18,6 +18,7 @@ void State_Game::OnCreate()
 
 void State_Game::OnDestroy()
 {
+	m_world->OnDestroy();
 	ClearUILayer();
 }
 

@@ -14,9 +14,12 @@ public:
 		sf::Texture* texture = new sf::Texture();
 		if (!texture->loadFromFile(Utils::GetEngineResourceDirectory() + "textures/" + l_path))
 		{
-			delete texture;
-			texture = nullptr;
-			std::cerr << "! Failed to load texture: " << l_path << '\n';
+			if (!texture->loadFromFile(Utils::GetGameResourceDirectory() + "textures/" + l_path))
+			{
+				delete texture;
+				texture = nullptr;
+				std::cerr << "! Failed to load texture: " << l_path << '\n';
+			}
 		}
 		return texture;
 	}

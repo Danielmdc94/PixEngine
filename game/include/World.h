@@ -3,6 +3,7 @@
 #include "SFML/Graphics/RenderWindow.hpp"
 
 #include "BaseState.h"
+#include "TileMap.h"
 
 class World
 {
@@ -31,4 +32,5 @@ private:
 	float m_tileSize;
 	sf::Vector2i m_mapSize;
 	std::vector<std::vector<sf::RectangleShape>> m_tileMap;
+	TileMap* m_tileMap2;
 };
