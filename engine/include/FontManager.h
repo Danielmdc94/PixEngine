@@ -14,9 +14,12 @@ public:
 		sf::Font* font = new sf::Font();
 		if (!font->loadFromFile(Utils::GetEngineResourceDirectory() + "fonts/" + l_path))
 		{
-			delete font;
-			font = nullptr;
-			std::cerr << "! Failed to load font: " << l_path << '\n';
+			if (!font->loadFromFile(Utils::GetGameResourceDirectory() + "fonts/" + l_path))
+			{
+				delete font;
+				font = nullptr;
+				std::cerr << "! Failed to load font: " << l_path << '\n';
+			}
 		}
 		return font;
 	}

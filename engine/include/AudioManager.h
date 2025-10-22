@@ -14,9 +14,12 @@ public:
 		sf::Music* audio = new sf::Music();
 		if (!audio->openFromFile(Utils::GetEngineResourceDirectory() + "audio/" + l_path))
 		{
-			delete audio;
-			audio = nullptr;
-			std::cerr << "! Failed to load audio file: " << l_path << '\n';
+			if (!audio->openFromFile(Utils::GetGameResourceDirectory() + "audio/" + l_path))
+			{
+				delete audio;
+				audio = nullptr;
+				std::cerr << "! Failed to load audio file: " << l_path << '\n';
+			}
 		}
 		return audio;
 	}
