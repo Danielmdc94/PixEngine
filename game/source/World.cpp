@@ -1,7 +1,6 @@
 ﻿#include "World.h"
 
 #include "StateManager.h"
-#include "Player.h"
 
 void World::OnCreate()
 {
@@ -13,7 +12,7 @@ void World::OnCreate()
 	m_tileMap2->LoadFromFile("Map.txt", nullptr);
 	//Tile groundTile(m_owner->GetStateManager()->GetContext()->m_textureManager->GetResource("BrickTile"), sf::IntRect(0, 0, 250, 250), true, 1);
 	//for (unsigned x = 0; x < m_tileMap2->GetWidth(); ++x)m_tileMap2->SetTile(x, m_tileMap2->GetHeight() - 1, groundTile);
-
+	
 	
 	m_tileMap.resize(m_mapSize.x, std::vector<sf::RectangleShape>());
 	for (int x = 0; x < m_mapSize.x; ++x)
@@ -39,7 +38,10 @@ void World::OnCreate()
 	m_tileSelector.setPosition(0.f, 0.f);
 
 	m_owner->GetStateManager()->GetContext()->m_entityManager->RegisterEntity<Player>(GameEntityType::Player);
-	m_owner->GetStateManager()->GetContext()->m_entityManager->CreateEntity(GameEntityType::Player);
+	m_player = dynamic_cast<Player*>( m_owner->GetStateManager()->GetContext()->m_entityManager->CreateEntity(GameEntityType::Player));
+
+	m_player->SetCollisionMap(m_tileMap2);
+
 }
 
 void World::OnDestroy()
@@ -51,6 +53,7 @@ void World::Draw(sf::RenderWindow* l_window)
 {
 	l_window->setView(m_worldView);
 	m_tileMap2->Draw(l_window);
+	m_owner->GetStateManager()->GetContext()->m_entityManager->Draw();
 	
 	for (int x = std::max((int(m_owner->GetStateManager()->GetContext()->m_eventManager->GetMousePositionView(l_window).x) / 64) - 3, 0); x < std::min((int(m_owner->GetStateManager()->GetContext()->m_eventManager->GetMousePositionView(l_window).x) / 64) + 4, m_mapSize.x); ++x)
 	{

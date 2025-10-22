@@ -8,6 +8,9 @@
 
 #include "SharedContext.h"
 
+class TileMap;
+
+
 class Player : public Entity
 {
 public:
@@ -18,6 +21,9 @@ public:
 	void Draw(sf::RenderWindow* l_window) override;
 
 	sf::Vector2f GetPosition() const { return m_shape.getPosition(); }
+
+	void SetCollisionMap(TileMap* l_map) { m_collisionMap = l_map; }
+
 	
 private:
 	void OnMoveUpPressed(EventDetails*)    { m_moveUp = true; }
@@ -30,6 +36,9 @@ private:
 	void OnMoveLeftReleased(EventDetails*)  { m_moveLeft = false; }
 	void OnMoveRightReleased(EventDetails*) { m_moveRight = false; }
 
+	void ResolveCollision(sf::Vector2f& l_velocity, float l_deltaTime);
+
+
 private:
 	sf::RectangleShape m_shape;
 	float m_speed;
@@ -38,5 +47,8 @@ private:
 	bool m_moveDown{false};
 	bool m_moveLeft{false};
 	bool m_moveRight{false};
+
+	TileMap* m_collisionMap{nullptr};
+
 
 };

@@ -62,6 +62,17 @@ Tile* TileMap::GetTile(unsigned l_x, unsigned l_y)
 	return m_tiles[l_y * m_width + l_x].get();
 }
 
+bool TileMap::IsSolidAt(int l_tileX, int l_tileY)
+{
+	if (l_tileX < 0 || l_tileY < 0 || static_cast<unsigned>(l_tileX) >= m_width || static_cast<unsigned>(l_tileY) >= m_height)
+	{
+		return true;
+	}
+	Tile* tile = GetTile(static_cast<unsigned>(l_tileX), static_cast<unsigned>(l_tileY));
+	return tile && tile->IsSolid();
+}
+
+
 void TileMap::Draw(sf::RenderWindow* l_window)
 {
 	for (auto& tile : m_tiles)

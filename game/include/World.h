@@ -4,6 +4,7 @@
 
 #include "BaseState.h"
 #include "TileMap.h"
+#include "Player.h"
 
 class World
 {
@@ -35,4 +36,6 @@ private:
 	sf::Vector2i m_mapSize;
 	std::vector<std::vector<sf::RectangleShape>> m_tileMap;
 	TileMap* m_tileMap2;
+
+	Player* m_player;
 };

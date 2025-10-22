@@ -17,6 +17,9 @@ public:
 	unsigned GetHeight() const { return m_height; }
 	unsigned GetTileSize() const { return m_tileSize; }
 
+	bool IsSolidAt(int l_tileX, int l_tileY);
+
+
 	void Draw(sf::RenderWindow* l_window);
 
 private:

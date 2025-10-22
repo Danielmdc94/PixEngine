@@ -30,6 +30,7 @@ void State_Game::Deactivate()
 void State_Game::Update(const sf::Time& l_deltaTime)
 {
 	sf::RenderWindow* window = m_stateManager->GetContext()->m_window->GetRenderWindow();
+
 	m_world->Update(l_deltaTime);
 
 	window->setView(m_view);
@@ -41,23 +42,19 @@ void State_Game::Draw()
 {
 	sf::RenderWindow* window = m_stateManager->GetContext()->m_window->GetRenderWindow();
 	m_world->Draw(window);
+//---------------------------------DEBUG
 	sf::Text text;
 	text.setCharacterSize(16);
 	text.setFillColor(sf::Color::White);
 	text.setFont(*GetStateManager()->GetContext()->m_fontManager->GetResource("EngineFont"));
 	text.setPosition(20.f, 20.f);
-
 	std::stringstream ss;
-
 	ss << "Screen: " << GetStateManager()->GetContext()->m_eventManager->GetMousePositionScreen().x << " " << GetStateManager()->GetContext()->m_eventManager->GetMousePositionScreen().y << "\n"
 		<< "Window: " <<  GetStateManager()->GetContext()->m_eventManager->GetMousePositionWindow(window).x << " " << GetStateManager()->GetContext()->m_eventManager->GetMousePositionWindow().y << "\n"
 		<< "View: " << GetStateManager()->GetContext()->m_eventManager->GetMousePositionView(window).x << " " << GetStateManager()->GetContext()->m_eventManager->GetMousePositionView(window).y << "\n"
 		<< "WorldTiles: " << GetStateManager()->GetContext()->m_eventManager->GetMousePositionView(window).x / 64 << " " << GetStateManager()->GetContext()->m_eventManager->GetMousePositionView(window).y / 64;
-
 	text.setString(ss.str());
-	
-	GetStateManager()->GetContext()->m_entityManager->Draw();
-	
+//--------------------------------------	
 	window->setView(m_view);
 	window->draw(text);
 	if (m_uiLayer && window)
