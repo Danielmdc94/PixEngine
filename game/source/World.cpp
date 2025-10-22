@@ -27,9 +27,6 @@ void World::OnCreate()
 			m_tileMap[x][y].setPosition(x * m_tileSize, y * m_tileSize);
 		}
 	}
-
-	
-
 	
 	m_tileSelector.setSize({m_tileSize, m_tileSize});
 	m_tileSelector.setFillColor(sf::Color::Transparent);
@@ -39,13 +36,12 @@ void World::OnCreate()
 
 	m_owner->GetStateManager()->GetContext()->m_entityManager->RegisterEntity<Player>(GameEntityType::Player);
 	m_player = dynamic_cast<Player*>( m_owner->GetStateManager()->GetContext()->m_entityManager->CreateEntity(GameEntityType::Player));
-
 	m_player->SetCollisionMap(m_tileMap2);
-
 }
 
 void World::OnDestroy()
 {
+	m_owner->GetStateManager()->GetContext()->m_entityManager->ClearEntities();
 	m_tileMap.clear();
 }
 

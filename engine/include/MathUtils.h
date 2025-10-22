@@ -18,3 +18,11 @@ sf::Vector2f VecNormalized(sf::Vector2f a)
 
     return a;
 }
+
+float Approach(float value, float target, float delta)
+{
+    if (value < target)
+        return std::min(value + delta, target);
+    
+    return std::max(value - delta, target);
+}

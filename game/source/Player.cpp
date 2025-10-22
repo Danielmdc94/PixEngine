@@ -3,6 +3,8 @@
 #include "Player.h"
 
 #include "TileMap.h"
+#include "MathUtils.h"
+
 
 Player::Player(EntityManager* l_entityManager) : Entity(l_entityManager), m_speed(200.f)
 {
@@ -22,23 +24,86 @@ Player::Player(EntityManager* l_entityManager) : Entity(l_entityManager), m_spee
 	eventManager->AddCallback(state, "Move_Left_Release", &Player::OnMoveLeftReleased, this);
 	eventManager->AddCallback(state, "Move_Right_Press", &Player::OnMoveRightPressed, this);
 	eventManager->AddCallback(state, "Move_Right_Release", &Player::OnMoveRightReleased, this);
+	eventManager->AddCallback(state, "Jump_Press", &Player::OnJumpPressed, this);
+	eventManager->AddCallback(state, "Jump_Release", &Player::OnJumpReleased, this);
 }
 
 void Player::Update(const sf::Time& l_deltaTime)
 {
-	const float deltaTimeSeconds = l_deltaTime.asSeconds();
+    const float deltaTimeSeconds = l_deltaTime.asSeconds();
+    if (deltaTimeSeconds <= 0.f) { return; }
+    
+    const int axisX = (m_moveRight ? 1 : 0) - (m_moveLeft ? 1 : 0);
+    
+    const bool jumpPressedThisFrame  = (m_jump && !m_prevJump);
+    const bool jumpReleasedThisFrame = (!m_jump && m_prevJump);
+    
+    if (m_onGround)
+    {
+        m_coyoteTimer = m_coyoteTime;
+    }
+    else
+    {
+        m_coyoteTimer = std::max(0.f, m_coyoteTimer - deltaTimeSeconds);
+    }
+    
+    if (jumpPressedThisFrame)
+    {
+        m_jumpBufferTimer = m_jumpBufferTime;
+    }
+    else
+    {
+        m_jumpBufferTimer = std::max(0.f, m_jumpBufferTimer - deltaTimeSeconds);
+    }
 
-	sf::Vector2f velocity(0.f, 0.f);
 
-
-	if (m_moveUp)    velocity.y -= m_speed * deltaTimeSeconds;
-	if (m_moveDown)  velocity.y += m_speed * deltaTimeSeconds;
-	if (m_moveLeft)  velocity.x -= m_speed * deltaTimeSeconds;
-	if (m_moveRight) velocity.x += m_speed * deltaTimeSeconds;
-
-	m_shape.move(velocity);
-	ResolveCollision(velocity, deltaTimeSeconds);
+    if (axisX != 0)
+    {
+        const float target = static_cast<float>(axisX) * m_maxSpeedX;
+        const float accel = m_onGround ? m_accelGround : m_accelAir;
+        m_velocity.x = Approach(m_velocity.x, target, accel * deltaTimeSeconds);
+    }
+    else
+    {
+        const float decel = m_onGround ? m_decelGround : m_accelAir;
+        m_velocity.x = Approach(m_velocity.x, 0.f, decel * deltaTimeSeconds);
+    }
+    
+    if (m_jumpBufferTimer > 0.f && m_coyoteTimer > 0.f)
+    {
+        m_velocity.y = -m_jumpSpeed;
+        m_onGround = false;
+        m_coyoteTimer = 0.f;
+        m_jumpBufferTimer = 0.f;
+    }
+    
+    float gravity = m_gravity;
+    if (m_velocity.y < 0.f)
+    {
+        if (!m_jump)
+        {
+            gravity *= m_jumpCutMultiplier;
+        }
+    }
+    else
+    {
+        gravity *= m_fallGravityMultiplier;
+    }
+    m_velocity.y += gravity * deltaTimeSeconds;
+    
+    if (jumpReleasedThisFrame && m_velocity.y < 0.f)
+    {
+        m_velocity.y *= 0.6f;
+    }
+    
+    sf::Vector2f velToMove = m_velocity;
+    ResolveCollision(velToMove, deltaTimeSeconds);
+    
+    m_velocity = velToMove;
+    
+    m_prevJump = m_jump;
 }
+
 
 void Player::Draw(sf::RenderWindow* l_window)
 {
@@ -47,9 +112,10 @@ void Player::Draw(sf::RenderWindow* l_window)
 
 void Player::ResolveCollision(sf::Vector2f& l_velocity, float l_deltaTime)
 {
-    // If there's no map, just move freely
-    if (!m_collisionMap) {
+    if (!m_collisionMap)
+    {
         m_shape.move(l_velocity * l_deltaTime);
+        m_onGround = false;
         return;
     }
 
@@ -58,6 +124,8 @@ void Player::ResolveCollision(sf::Vector2f& l_velocity, float l_deltaTime)
     const float tileSize = static_cast<float>(m_collisionMap->GetTileSize());
     sf::Vector2f pos = m_shape.getPosition();
     const sf::Vector2f half = m_shape.getSize() * 0.5f;
+    
+    bool groundedThisFrame = false;
 
     // Move on X axis
     float dx = l_velocity.x * l_deltaTime;
@@ -74,24 +142,37 @@ void Player::ResolveCollision(sf::Vector2f& l_velocity, float l_deltaTime)
         int tyMin = static_cast<int>(std::floor(top / tileSize));
         int tyMax = static_cast<int>(std::floor((bottom - eps) / tileSize));
 
-        if (dx > 0.f) {
+        if (dx > 0.f)
+        {
             int tx = txMax;
             bool hit = false;
-            for (int ty = tyMin; ty <= tyMax; ++ty) {
-                if (m_collisionMap->IsSolidAt(tx, ty)) { hit = true; break; }
+            for (int ty = tyMin; ty <= tyMax; ++ty)
+            {
+                if (m_collisionMap->IsSolidAt(tx, ty))
+                {
+                    hit = true; break;
+                }
             }
-            if (hit) {
+            if (hit)
+            {
                 float tileLeft = tx * tileSize;
                 newCenterX = tileLeft - half.x;
-                l_velocity.x = 0.f; // stop horizontal velocity
+                l_velocity.x = 0.f;
             }
-        } else {
+        }
+        else
+        {
             int tx = txMin;
             bool hit = false;
-            for (int ty = tyMin; ty <= tyMax; ++ty) {
-                if (m_collisionMap->IsSolidAt(tx, ty)) { hit = true; break; }
+            for (int ty = tyMin; ty <= tyMax; ++ty)
+            {
+                if (m_collisionMap->IsSolidAt(tx, ty))
+                {
+                    hit = true; break;
+                }
             }
-            if (hit) {
+            if (hit)
+            {
                 float tileRight = (tx + 1) * tileSize;
                 newCenterX = tileRight + half.x;
                 l_velocity.x = 0.f;
@@ -103,7 +184,8 @@ void Player::ResolveCollision(sf::Vector2f& l_velocity, float l_deltaTime)
 
     // Move on Y axis
     float dy = l_velocity.y * l_deltaTime;
-    if (dy != 0.f) {
+    if (dy != 0.f)
+    {
         float newCenterY = pos.y + dy;
 
         float left   = pos.x - half.x;
@@ -116,33 +198,45 @@ void Player::ResolveCollision(sf::Vector2f& l_velocity, float l_deltaTime)
         int tyMin = static_cast<int>(std::floor(top / tileSize));
         int tyMax = static_cast<int>(std::floor((bottom - eps) / tileSize));
 
-        if (dy > 0.f) {
+        if (dy > 0.f)
+        { 
             int ty = tyMax;
             bool hit = false;
-            for (int tx = txMin; tx <= txMax; ++tx) {
+            for (int tx = txMin; tx <= txMax; ++tx)
+            {
                 if (m_collisionMap->IsSolidAt(tx, ty)) { hit = true; break; }
             }
-            if (hit) {
+            if (hit)
+            {
                 float tileTop = ty * tileSize;
                 newCenterY = tileTop - half.y;
                 l_velocity.y = 0.f;
+                groundedThisFrame = true;
             }
-        } else {
+        }
+        else
+        {
             int ty = tyMin;
             bool hit = false;
-            for (int tx = txMin; tx <= txMax; ++tx) {
-                if (m_collisionMap->IsSolidAt(tx, ty)) { hit = true; break; }
+            for (int tx = txMin; tx <= txMax; ++tx)
+            {
+                if (m_collisionMap->IsSolidAt(tx, ty))
+                {
+                    hit = true; break;
+                }
             }
-            if (hit) {
+            if (hit)
+            {
                 float tileBottom = (ty + 1) * tileSize;
                 newCenterY = tileBottom + half.y;
                 l_velocity.y = 0.f;
             }
         }
-
         pos.y = newCenterY;
     }
 
     m_shape.setPosition(pos);
+    m_onGround = groundedThisFrame;
 }
+
 
