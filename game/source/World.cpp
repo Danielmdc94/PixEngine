@@ -37,6 +37,7 @@ void World::OnCreate()
 	m_owner->GetStateManager()->GetContext()->m_entityManager->RegisterEntity<Player>(GameEntityType::Player);
 	m_player = dynamic_cast<Player*>( m_owner->GetStateManager()->GetContext()->m_entityManager->CreateEntity(GameEntityType::Player));
 	m_player->SetCollisionMap(m_tileMap2);
+	m_player->SetWorld(this);
 }
 
 void World::OnDestroy()

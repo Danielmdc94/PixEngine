@@ -4,6 +4,7 @@
 
 #include "TileMap.h"
 #include "MathUtils.h"
+#include "World.h"
 
 
 Player::Player(EntityManager* l_entityManager) : Entity(l_entityManager), m_speed(200.f)
@@ -26,21 +27,78 @@ Player::Player(EntityManager* l_entityManager) : Entity(l_entityManager), m_spee
 	eventManager->AddCallback(state, "Move_Right_Release", &Player::OnMoveRightReleased, this);
 	eventManager->AddCallback(state, "Jump_Press", &Player::OnJumpPressed, this);
 	eventManager->AddCallback(state, "Jump_Release", &Player::OnJumpReleased, this);
+    eventManager->AddCallback(state, "Run_Press", &Player::OnRunPressed, this);
+    eventManager->AddCallback(state, "Run_Release", &Player::OnRunReleased, this);
+    eventManager->AddCallback(state, "Dash_Press", &Player::OnDashPressed, this);
 }
 
 void Player::Update(const sf::Time& l_deltaTime)
 {
     const float deltaTimeSeconds = l_deltaTime.asSeconds();
-    if (deltaTimeSeconds <= 0.f) { return; }
+    if (deltaTimeSeconds <= 0.f)
+    {
+        return;
+    }
     
-    const int axisX = (m_moveRight ? 1 : 0) - (m_moveLeft ? 1 : 0);
-    
+    // Dash
+    if (m_isDashing)
+    {
+        m_dashTimer -= deltaTimeSeconds;
+        if (m_dashTimer <= 0.f)
+        {
+            m_isDashing = false;
+        }
+        else
+        {
+            sf::Vector2f velToMove = m_velocity;
+            ResolveCollision(velToMove, deltaTimeSeconds);
+            m_velocity = velToMove;
+            m_jump = false;
+            m_prevJump = false;
+            m_coyoteTimer = 0.f;
+            m_jumpBufferTimer = 0.f;
+            return;
+        }
+    }
+
+    // Movement
+    int axisX = (m_moveRight ? 1 : 0) - (m_moveLeft ? 1 : 0);
+
+    float targetSpeed = m_maxSpeedX;
+    if (m_running)
+        targetSpeed *= m_runSpeedMultiplier;
+
+    float targetVelocity = static_cast<float>(axisX) * targetSpeed;
+    float acceleration;
+    if (m_onGround)
+    {
+        acceleration = (axisX != 0) ? m_accelGround : m_decelGround;
+    }
+    else
+    {
+        acceleration = m_accelAir;
+        if (axisX != 0)
+        {
+            if ((axisX > 0 && m_velocity.x > 0.f) || (axisX < 0 && m_velocity.x < 0.f))
+            {
+                acceleration *= 0.4f;
+            }
+        }
+        else
+        {
+            acceleration *= 0.2f;
+        }
+    }
+    m_velocity.x = Approach(m_velocity.x, targetVelocity, acceleration * deltaTimeSeconds);
+
+    // Jumping
     const bool jumpPressedThisFrame  = (m_jump && !m_prevJump);
     const bool jumpReleasedThisFrame = (!m_jump && m_prevJump);
     
     if (m_onGround)
     {
         m_coyoteTimer = m_coyoteTime;
+        m_jumpCount = 0;
     }
     else
     {
@@ -55,28 +113,19 @@ void Player::Update(const sf::Time& l_deltaTime)
     {
         m_jumpBufferTimer = std::max(0.f, m_jumpBufferTimer - deltaTimeSeconds);
     }
-
-
-    if (axisX != 0)
-    {
-        const float target = static_cast<float>(axisX) * m_maxSpeedX;
-        const float accel = m_onGround ? m_accelGround : m_accelAir;
-        m_velocity.x = Approach(m_velocity.x, target, accel * deltaTimeSeconds);
-    }
-    else
-    {
-        const float decel = m_onGround ? m_decelGround : m_accelAir;
-        m_velocity.x = Approach(m_velocity.x, 0.f, decel * deltaTimeSeconds);
-    }
     
-    if (m_jumpBufferTimer > 0.f && m_coyoteTimer > 0.f)
+    if (m_jumpBufferTimer > 0.f && (m_coyoteTimer > 0.f || m_jumpCount < m_maxJumps))
     {
-        m_velocity.y = -m_jumpSpeed;
         m_onGround = false;
         m_coyoteTimer = 0.f;
         m_jumpBufferTimer = 0.f;
+        
+        m_velocity.y = -m_jumpSpeed;
+
+        m_jumpCount++;
     }
-    
+
+    // Falling
     float gravity = m_gravity;
     if (m_velocity.y < 0.f)
     {
@@ -95,12 +144,12 @@ void Player::Update(const sf::Time& l_deltaTime)
     {
         m_velocity.y *= 0.6f;
     }
-    
+
+    // Collision check
     sf::Vector2f velToMove = m_velocity;
     ResolveCollision(velToMove, deltaTimeSeconds);
     
     m_velocity = velToMove;
-    
     m_prevJump = m_jump;
 }
 
@@ -122,7 +171,7 @@ void Player::ResolveCollision(sf::Vector2f& l_velocity, float l_deltaTime)
     static constexpr float eps = 0.001f;
 
     const float tileSize = static_cast<float>(m_collisionMap->GetTileSize());
-    sf::Vector2f pos = m_shape.getPosition();
+    sf::Vector2f position = m_shape.getPosition();
     const sf::Vector2f half = m_shape.getSize() * 0.5f;
     
     bool groundedThisFrame = false;
@@ -130,12 +179,12 @@ void Player::ResolveCollision(sf::Vector2f& l_velocity, float l_deltaTime)
     // Move on X axis
     float dx = l_velocity.x * l_deltaTime;
     if (dx != 0.f) {
-        float newCenterX = pos.x + dx;
+        float newCenterX = position.x + dx;
 
         float left   = newCenterX - half.x;
         float right  = newCenterX + half.x;
-        float top    = pos.y - half.y;
-        float bottom = pos.y + half.y;
+        float top    = position.y - half.y;
+        float bottom = position.y + half.y;
 
         int txMin = static_cast<int>(std::floor(left / tileSize));
         int txMax = static_cast<int>(std::floor((right - eps) / tileSize));
@@ -179,17 +228,17 @@ void Player::ResolveCollision(sf::Vector2f& l_velocity, float l_deltaTime)
             }
         }
 
-        pos.x = newCenterX;
+        position.x = newCenterX;
     }
 
     // Move on Y axis
     float dy = l_velocity.y * l_deltaTime;
     if (dy != 0.f)
     {
-        float newCenterY = pos.y + dy;
+        float newCenterY = position.y + dy;
 
-        float left   = pos.x - half.x;
-        float right  = pos.x + half.x;
+        float left   = position.x - half.x;
+        float right  = position.x + half.x;
         float top    = newCenterY - half.y;
         float bottom = newCenterY + half.y;
 
@@ -232,11 +281,74 @@ void Player::ResolveCollision(sf::Vector2f& l_velocity, float l_deltaTime)
                 l_velocity.y = 0.f;
             }
         }
-        pos.y = newCenterY;
+        position.y = newCenterY;
     }
 
-    m_shape.setPosition(pos);
+    m_shape.setPosition(position);
     m_onGround = groundedThisFrame;
+    
+    m_dashRechargeTimer = 0.f;
+    if (groundedThisFrame)
+    {
+        if (m_dashRechargeTimer <= 0.f)
+        {
+            m_canDash = true;
+        }
+    }
+    else
+    {
+        m_dashRechargeTimer = m_dashCooldown;
+    }
 }
 
+void Player::OnDashPressed(EventDetails*)
+{
+    if (m_canDash && !m_isDashing && !m_onGround)
+    {
+        m_isDashing = true;
+        m_canDash = false;
+        m_dashTimer = m_dashDuration;
 
+        sf::RenderWindow* window = m_entityManager->GetContext()->m_window->GetRenderWindow();
+        window->setView(*m_world->GetWorldView());
+        
+        sf::Vector2f mouseWorldPosition = m_entityManager->GetContext()->m_eventManager->GetMousePositionView(window);
+        sf::Vector2f position = m_shape.getPosition();
+        sf::Vector2f direction = mouseWorldPosition - position;
+
+        //----------- Dash to keyboard input instead (Default to right)
+        //if (m_moveUp)    direction.y -= 1.f;
+        //if (m_moveDown)  direction.y += 1.f;
+        //if (m_moveLeft)  direction.x -= 1.f;
+        //if (m_moveRight) direction.x += 1.f;
+        //
+        //if (direction.x == 0.f && direction.y == 0.f)
+        //    direction.x = 1.f;
+        //-----------------------------------------------------
+        
+        float len = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+        if (len > 0.f)
+        {
+            direction /= len;
+        }
+        else
+        {
+            direction = { 1.f, 0.f };
+        }
+
+        m_velocity = direction * m_dashSpeed;
+        window->setView(*m_world->GetWorldView());
+
+
+        //-----------
+        //if (m_moveUp) direction.y -= 1.f;
+        //if (m_moveDown) direction.y += 1.f;
+        //if (m_moveLeft) direction.x -= 1.f;
+        //if (m_moveRight) direction.x += 1.f;
+        //
+        //if (direction.x == 0.f && direction.y == 0.f)
+        //    direction.x = 1.f;
+        //-----------
+        
+    }
+}
