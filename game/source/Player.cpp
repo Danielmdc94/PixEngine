@@ -317,9 +317,9 @@ void Player::OnDashPressed(EventDetails*)
         sf::Vector2f direction = mouseWorldPosition - position;
 
         //----------- Dash to keyboard input instead (Default to right)
-        //if (m_moveUp)    direction.y -= 1.f;
-        //if (m_moveDown)  direction.y += 1.f;
-        //if (m_moveLeft)  direction.x -= 1.f;
+        //if (m_moveUp) direction.y -= 1.f;
+        //if (m_moveDown) direction.y += 1.f;
+        //if (m_moveLeft) direction.x -= 1.f;
         //if (m_moveRight) direction.x += 1.f;
         //
         //if (direction.x == 0.f && direction.y == 0.f)
@@ -337,18 +337,6 @@ void Player::OnDashPressed(EventDetails*)
         }
 
         m_velocity = direction * m_dashSpeed;
-        window->setView(*m_world->GetWorldView());
-
-
-        //-----------
-        //if (m_moveUp) direction.y -= 1.f;
-        //if (m_moveDown) direction.y += 1.f;
-        //if (m_moveLeft) direction.x -= 1.f;
-        //if (m_moveRight) direction.x += 1.f;
-        //
-        //if (direction.x == 0.f && direction.y == 0.f)
-        //    direction.x = 1.f;
-        //-----------
-        
+        window->setView(*m_world->GetWorldView()); 
     }
 }
