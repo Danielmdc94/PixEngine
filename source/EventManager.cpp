@@ -153,7 +153,6 @@ void EventManager::Update()
 				if (callItr != otherCallbacks->second.end())
 					callItr->second(&bind->m_details);
 			}
-			//std::cout << "Event: " << bind->m_name << std::endl;
 		}
 		bind->count = 0;
 		bind->m_details.Clear();
@@ -162,8 +161,6 @@ void EventManager::Update()
 
 void EventManager::LoadBindings()
 {
-	// Engine defaults first, then let the game's own Keys.cfg add new
-	// bindings or override existing ones by name.
 	LoadBindingsFromFile(Utils::GetEngineConfigDirectory() + "Keys.cfg", false);
 	LoadBindingsFromFile(Utils::GetGameConfigDirectory() + "Keys.cfg", true);
 }

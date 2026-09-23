@@ -35,11 +35,6 @@ namespace Utils
 	}
 	#endif
 
-	// These directories are relative to the running executable and can be
-	// overridden by the build system (see PixEngine's CMakeLists.txt) so the
-	// same source works whether PixEngine is built standalone (with its
-	// bundled example project) or embedded as a subdirectory inside another
-	// project. Defaults below match the standalone/example build.
 	#ifndef PIXENGINE_ENGINE_ASSETS_DIR
 	#define PIXENGINE_ENGINE_ASSETS_DIR "assets/"
 	#endif

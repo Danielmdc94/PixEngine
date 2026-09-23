@@ -90,39 +90,35 @@ private:
 
 	void LoadPaths(const std::string& l_pathFile)
 	{
+		bool engineLoaded = LoadPathsFromFile(Utils::GetEngineConfigDirectory() + l_pathFile, false);
+		LoadPathsFromFile(Utils::GetGameConfigDirectory() + l_pathFile, true);
+		if (!engineLoaded)
+			std::cerr << "! Failed loading the path file: " << l_pathFile << '\n';
+	}
+
+	bool LoadPathsFromFile(const std::string& l_path, bool l_allowOverride)
+	{
 		std::ifstream paths;
-		paths.open(Utils::GetEngineConfigDirectory() + l_pathFile);
-		if (paths.is_open())
+		paths.open(l_path);
+		if (!paths.is_open())
+			return false;
+		std::string line;
+		while (std::getline(paths, line))
 		{
-			std::string line;
-			while (std::getline(paths, line))
-			{
-				std::stringstream keystream(line);
-				std::string pathName;
-				std::string path;
-				keystream >> pathName;
-				keystream >> path;
+			std::stringstream keystream(line);
+			std::string pathName;
+			std::string path;
+			keystream >> pathName;
+			keystream >> path;
+			if (pathName.empty() || path.empty())
+				continue;
+			if (l_allowOverride)
+				m_paths[pathName] = path;
+			else
 				m_paths.emplace(pathName, path);
-			}
-			paths.close();
-			paths.open(Utils::GetGameConfigDirectory() + l_pathFile);
-			if (paths.is_open())
-			{
-				std::string line;
-				while (std::getline(paths, line))
-				{
-					std::stringstream keystream(line);
-					std::string pathName;
-					std::string path;
-					keystream >> pathName;
-					keystream >> path;
-					m_paths.emplace(pathName, path);
-				}
-				paths.close();
-			}
-			return;
 		}
-		std::cerr << "! Failed loading the path file: " << l_pathFile << '\n';
+		paths.close();
+		return true;
 	}
 
 	std::unordered_map<std::string, std::pair<T*, unsigned int>> m_resources;
