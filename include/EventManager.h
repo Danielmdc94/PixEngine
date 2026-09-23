@@ -121,6 +121,7 @@ public:
 
 private:
 	void LoadBindings();
+	void LoadBindingsFromFile(const std::string& l_path, bool l_allowOverride);
 
 	Bindings m_bindings;
 	Callbacks m_callbacks;

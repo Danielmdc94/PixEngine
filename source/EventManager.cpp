@@ -162,12 +162,21 @@ void EventManager::Update()
 
 void EventManager::LoadBindings()
 {
+	// Engine defaults first, then let the game's own Keys.cfg add new
+	// bindings or override existing ones by name.
+	LoadBindingsFromFile(Utils::GetEngineConfigDirectory() + "Keys.cfg", false);
+	LoadBindingsFromFile(Utils::GetGameConfigDirectory() + "Keys.cfg", true);
+}
+
+void EventManager::LoadBindingsFromFile(const std::string& l_path, bool l_allowOverride)
+{
 	std::string delimiter = ":";
 	std::ifstream bindings;
-	bindings.open(Utils::GetEngineConfigDirectory() + "Keys.cfg");
+	bindings.open(l_path);
 	if (!bindings.is_open())
 	{
-		std::cerr << "! Failed loading " + Utils::GetEngineConfigDirectory() + "Keys.cfg" << std::endl;
+		if (!l_allowOverride)
+			std::cerr << "! Failed loading " + l_path << std::endl;
 		return;
 	}
 	std::string line;
@@ -176,6 +185,8 @@ void EventManager::LoadBindings()
 		std::stringstream keystream(line);
 		std::string callbackName;
 		keystream >> callbackName;
+		if (callbackName.empty())
+			continue;
 		Binding* bind = new Binding(callbackName);
 		while (!keystream.eof())
 		{
@@ -195,6 +206,10 @@ void EventManager::LoadBindings()
 			eventInfo.m_code = code;
 			bind->BindEvent(type, eventInfo);
 		}
+		if (!bind)
+			continue;
+		if (l_allowOverride && m_bindings.find(callbackName) != m_bindings.end())
+			RemoveBinding(callbackName);
 		if (!AddBinding(bind))
 			delete bind;
 		bind = nullptr;
