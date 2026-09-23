@@ -2,6 +2,7 @@
 
 #include "Player.h"
 #include "EntityManager.h"
+#include "GameStateType.h"
 
 void State_GameIntro::OnCreate()
 {
@@ -20,13 +21,13 @@ void State_GameIntro::OnCreate()
 	m_textTitle.setPosition(static_cast<float>(windowSize.x) / 2.0f, static_cast<float>(windowSize.y) / 4.0f);
 
 	EventManager* eventManager = m_stateManager->GetContext()->m_eventManager;
-	eventManager->AddCallback(StateType::GameIntro, "Key_Space", &State_GameIntro::Continue, this);
+	eventManager->AddCallback(GameStateType::GameIntro, "Key_Space", &State_GameIntro::Continue, this);
 }
 
 void State_GameIntro::OnDestroy()
 {
 	EventManager* eventManager = m_stateManager->GetContext()->m_eventManager;
-	eventManager->RemoveCallback(StateType::GameIntro, "Key_Space");
+	eventManager->RemoveCallback(GameStateType::GameIntro, "Key_Space");
 	m_stateManager->GetContext()->m_entityManager->ClearEntities();
 }
 
@@ -59,6 +60,6 @@ void State_GameIntro::Draw()
 
 void State_GameIntro::Continue(EventDetails* l_details)
 {
-	m_stateManager->SwitchTo(StateType::GameMenu);
-	m_stateManager->Remove(StateType::GameIntro);
+	m_stateManager->SwitchTo(GameStateType::GameMenu);
+	m_stateManager->Remove(GameStateType::GameIntro);
 }

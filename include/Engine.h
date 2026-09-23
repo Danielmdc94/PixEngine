@@ -25,6 +25,7 @@ public:
 	void LateUpdate();
 
 	Window* GetWindow() { return &m_window; };
+	StateManager* GetStateManager() { return &m_stateManager; };
 	sf::Time GetElapsed() { return m_elapsed; };
 
 	void RestartClock() { m_elapsed = m_clock.restart(); };

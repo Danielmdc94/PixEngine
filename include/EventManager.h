@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <functional>
 #include "../include/Utilities.h"
+#include "StateType.h"
 
 struct SharedContext;
 
@@ -75,7 +76,6 @@ struct Binding
 
 using Bindings = std::unordered_map<std::string, Binding*>;
 using CallbackContainer = std::unordered_map<std::string, std::function<void(EventDetails*)>>;
-enum class StateType;
 using Callbacks = std::unordered_map<StateType, CallbackContainer>;
 
 class EventManager

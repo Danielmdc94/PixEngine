@@ -13,7 +13,7 @@ Engine::Engine() : m_window(WIN_NAME, sf::Vector2u(WIN_W, WIN_H)), m_stateManage
 	m_context.m_fontManager = &m_fontManager;
 	m_context.m_entityManager = &m_entityManager;
 	m_context.m_stateManager = &m_stateManager;
-	m_stateManager.SwitchTo(StateType::EngineIntro);
+	m_stateManager.SwitchTo(EngineStateType::EngineIntro);
 }
 
 Engine::~Engine()

@@ -1,6 +1,7 @@
 ﻿#include "World.h"
 
 #include "StateManager.h"
+#include "GameEntityType.h"
 
 void World::OnCreate()
 {

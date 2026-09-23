@@ -5,10 +5,6 @@
 
 #include "Entity.h"
 
-namespace GameEntityType {
-	inline const std::string Player = "Player";
-}
-
 struct SharedContext;
 
 using EntityType = std::string;

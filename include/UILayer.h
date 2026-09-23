@@ -8,7 +8,6 @@
 #include "UIButton.h"
 
 class BaseState;
-enum class StateType;
 
 class UILayer
 {

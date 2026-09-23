@@ -1,6 +1,5 @@
 #include "EntityManager.h"
 #include "SharedContext.h"
-#include "Player.h"
 
 EntityManager::EntityManager(SharedContext* context) : m_context(context)
 {

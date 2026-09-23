@@ -52,13 +52,13 @@ void State_EngineIntro::OnCreate()
 	m_musicPlayed = false;
 
 	EventManager* eventManager = m_stateManager->GetContext()->m_eventManager;
-	eventManager->AddCallback(StateType::EngineIntro, "Key_Space", &State_EngineIntro::Continue, this);
+	eventManager->AddCallback(EngineStateType::EngineIntro, "Key_Space", &State_EngineIntro::Continue, this);
 }
 
 void State_EngineIntro::OnDestroy()
 {
 	EventManager* eventManager = m_stateManager->GetContext()->m_eventManager;
-	eventManager->RemoveCallback(StateType::EngineIntro, "Key_Space");
+	eventManager->RemoveCallback(EngineStateType::EngineIntro, "Key_Space");
 }
 
 void State_EngineIntro::Activate()
@@ -110,8 +110,8 @@ void State_EngineIntro::Continue(EventDetails* l_details)
 {
 	if (m_timePassed >= 2.5f)
 	{
-		m_stateManager->SwitchTo(StateType::GameIntro);
-		m_stateManager->Remove(StateType::EngineIntro);
+		m_stateManager->SwitchTo(m_stateManager->GetInitialState());
+		m_stateManager->Remove(EngineStateType::EngineIntro);
 	}
 	else
 	{

@@ -5,7 +5,6 @@
 #include "EventManager.h"
 
 class StateManager;
-enum class StateType;
 
 class BaseState
 {

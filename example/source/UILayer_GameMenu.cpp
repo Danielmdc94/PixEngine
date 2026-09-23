@@ -1,5 +1,6 @@
 ﻿#include "UILayer_GameMenu.h"
 #include "StateManager.h"
+#include "GameStateType.h"
 
 void UILayer_GameMenu::OnCreate()
 {
@@ -22,12 +23,12 @@ void UILayer_GameMenu::OnCreate()
 
 void UILayer_GameMenu::PlayButton()
 {
-	m_owner->GetStateManager()->SwitchTo(StateType::Game);
-	m_owner->GetStateManager()->Remove(StateType::GameMenu);
+	m_owner->GetStateManager()->SwitchTo(GameStateType::Game);
+	m_owner->GetStateManager()->Remove(GameStateType::GameMenu);
 }
 
 void UILayer_GameMenu::QuitButton()
 {
-	m_owner->GetStateManager()->SwitchTo(StateType::GameIntro);
-	m_owner->GetStateManager()->Remove(StateType::GameMenu);
+	m_owner->GetStateManager()->SwitchTo(GameStateType::GameIntro);
+	m_owner->GetStateManager()->Remove(GameStateType::GameMenu);
 }
